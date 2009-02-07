@@ -17,7 +17,7 @@ import org.wltea.expression.datameta.BaseDataMeta;
 import org.wltea.expression.datameta.Constant;
 import org.wltea.expression.datameta.Variable;
 import org.wltea.expression.datameta.VariableContainer;
-import org.wltea.expression.function.SystemFunctions;
+import org.wltea.expression.function.FunctionExecution;
 import org.wltea.expression.op.Operator;
 
 /**
@@ -416,7 +416,7 @@ public class ExpressionExecutorInCoding extends ExpressionExecutor {
 						//执行函数
 						Constant[] arguments = new Constant[argsList.size()];
 						arguments = argsList.toArray(arguments);
-						Constant result = SystemFunctions.execute(expToken.getFunctionName(), expToken.getStartPosition() , arguments);
+						Constant result = FunctionExecution.execute(expToken.getFunctionName(), expToken.getStartPosition() , arguments);
 						ExpressionToken resultToken =  ExpressionToken.createConstantToken(result);
 						//函数结果入栈
 						executeStack.push(resultToken);
@@ -705,7 +705,7 @@ public class ExpressionExecutorInCoding extends ExpressionExecutor {
 				//校验函数
 				BaseDataMeta[] arguments = new BaseDataMeta[args.size()];
 				arguments = args.toArray(arguments);
-				Constant result = SystemFunctions.varify(funtionToken.getFunctionName(), funtionToken.getStartPosition() , arguments);
+				Constant result = FunctionExecution.varify(funtionToken.getFunctionName(), funtionToken.getStartPosition() , arguments);
 				return ExpressionToken.createConstantToken(result);
 				
 //			}else{
