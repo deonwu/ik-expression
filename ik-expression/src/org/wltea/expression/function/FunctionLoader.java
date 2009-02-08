@@ -55,6 +55,20 @@ public class FunctionLoader {
 	}
 
 	/**
+	 * 表达式可用函数除了从配置文件“functionConfig.properties”加载外，
+	 * 还可以通过此方法运行时添加
+	 * @param functionName 方法别名，表达式使用的名称
+	 * @param instance 调用的实例名
+	 * @param methodName 调用的方支渠名
+	 */
+	public static void addFunction(String functionName, Object instance, String methodName) {
+		if (functionName == null || instance == null || methodName == null) {
+			return;
+		}
+		single.functionMap.put(functionName, single.new Function(instance, methodName));
+	}
+	
+	/**
 	 * 跟据名称与参数类型加载方法
 	 * @param functionName 方法别名
 	 * @param parametersType 方法参数类型
@@ -103,13 +117,21 @@ public class FunctionLoader {
 		Function(Class _class, String _name) {
 			this._name = _name;
 			this._class = _class;
-			try {
-				this._instance = _class.newInstance();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
+			if (_class != null) {
+				try {
+					this._instance = _class.newInstance();
+				} catch (InstantiationException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
 			}
+		}
+		
+		Function(Object _instance, String _name) {
+			this._name = _name;
+			this._instance = _instance;
+			this._class = _instance.getClass();
 		}
 		
 		/**
@@ -119,7 +141,11 @@ public class FunctionLoader {
 		 * @throws NoSuchMethodException
 		 */
 		Method load(Class<?>[] parametersType) throws NoSuchMethodException {
-			return _class.getMethod(_name, parametersType);
+			if (_class != null) {
+				return _class.getMethod(_name, parametersType);
+			} else {
+				throw new NoSuchMethodException();
+			}
 		}
 		
 		/**
