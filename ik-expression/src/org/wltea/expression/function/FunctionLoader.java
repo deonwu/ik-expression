@@ -13,8 +13,9 @@ import java.util.Properties;
 /**
  * 表达式中函数加载器，从配置文件中加载可用的外部方法
  * 
- * @author zsy
- * @version Feb 3, 2009
+ * @author 卓诗垚
+ * @version 2.0
+ * Feb 3, 2009
  */
 @SuppressWarnings("unchecked")
 public class FunctionLoader {
@@ -81,7 +82,7 @@ public class FunctionLoader {
 	 * @throws InstantiationException
 	 */
 	public static Object invokeFunction(String functionName, Class<?>[] parametersType, 
-		Object[] parameters)  throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException{
+		Object[] parameters)  throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		Function f = single.functionMap.get(functionName);
 		if (f == null) {
 			throw new NoSuchMethodException();
@@ -98,9 +99,17 @@ public class FunctionLoader {
 	class Function {
 		String _name;
 		Class _class;
+		Object _instance;
 		Function(Class _class, String _name) {
 			this._name = _name;
 			this._class = _class;
+			try {
+				this._instance = _class.newInstance();
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		/**
@@ -124,9 +133,9 @@ public class FunctionLoader {
 		 * @throws InstantiationException
 		 */
 		Object invoke(Class<?>[] parametersType, Object[] parameters) throws NoSuchMethodException, 
-				IllegalAccessException, InvocationTargetException, InstantiationException {
+				IllegalAccessException, InvocationTargetException {
 			Method m = load(parametersType);
-			return m.invoke(_class.newInstance(), parameters);
+			return m.invoke(_instance, parameters);
 		}
 	}
 

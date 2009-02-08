@@ -10,8 +10,9 @@ import java.util.GregorianCalendar;
 
 /**
  * 系统默认函数
- * @author zsy
- * @version Feb 3, 2009
+ * @author 卓诗垚
+ * @version 2.0
+ * Feb 3, 2009
  */
 public class SystemFunctions {
 
