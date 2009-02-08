@@ -47,7 +47,7 @@ public class SystemFunctions {
 	 * @param str2
 	 * @return
 	 */
-	public boolean startWith(String str1 , String str2){
+	public boolean startsWith(String str1 , String str2){
 		if(str1 == null || str2 == null){
 			throw new NullPointerException("函数\"STARTSWITH\"参数为空");
 		}
@@ -60,7 +60,7 @@ public class SystemFunctions {
 	 * @param str2
 	 * @return
 	 */
-	public boolean endWith(String str1 , String str2){
+	public boolean endsWith(String str1 , String str2){
 		if(str1 == null || str2 == null){
 			throw new NullPointerException("函数\"ENDSWITH\"参数为空");
 		}

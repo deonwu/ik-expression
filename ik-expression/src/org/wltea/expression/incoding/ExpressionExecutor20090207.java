@@ -3,6 +3,7 @@
  */
 package org.wltea.expression.incoding;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -512,12 +513,12 @@ public class ExpressionExecutor20090207 extends ExpressionExecutor {
 	
 	
 	public static void main (String[] args){
-		//	String example = "\"aa\" + (false:1)";
-			//String example = "$STARTSWITH(\"hahahaha\", \"hahe\")";
+		//String example = "\"aa\" + ( false? 2 : 1 )";
+		String example = "$STARTSWITH(\"hahahaha\", \"hahe\")";
 			//String example = "$ENDSWITH(\"hahahaha\", \"haha\")";
 			//String example = "true != !$DAYEQUALS($CALCDATE($SYSDATE() ,0,0 , (8+11-5*(6/3)) * (2- 59 % 7),0 ,0,0 ) , [2008-10-01])";  
 			
-			String example = "100>10 ?  200 * 2 + 1/100>20 ?  \"p0\" : \"p1\" :  300>30 ? \"P2\" : \"p3\"";
+			//String example = "100>10 ?  200 * 2 + 1/100>20 ?  \"p0\" : \"p1\" :  300>30 ? \"P2\" : \"p3\"";
 			//String example = "8+11-5*(6/3)";  
 			//String example = "\"12345\" <= \"223\"";
 			//String example = "12345 <= 223";
@@ -567,10 +568,13 @@ public class ExpressionExecutor20090207 extends ExpressionExecutor {
 				System.out.println("s2 -- " + s2);
 				System.out.println("s1 == s2 ? " + s1.equals(s2));
 
-				//System.out.println(ee.executeRPN(tokens));
+				System.out.println(ee.executeRPN(tokens).toJavaObject());
 				
 			} catch (IllegalExpressionException e) {
 
+				e.printStackTrace();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}	

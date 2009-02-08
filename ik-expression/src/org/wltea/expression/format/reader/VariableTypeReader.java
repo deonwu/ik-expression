@@ -16,7 +16,7 @@ import org.wltea.expression.format.Element.ElementType;
  */
 public class VariableTypeReader implements ElementReader {
 
-	public static final String STOP_CHAR ="+-*/%^<>=&|!:#$(),[]\" ";//词段的结束符
+	public static final String STOP_CHAR ="+-*/%^<>=&|!?:#$(),[]\" ";//词段的结束符
 	
 	public static final String TRUE_WORD = "true";
 	public static final String FALSE_WORD = "false";
