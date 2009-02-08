@@ -513,50 +513,51 @@ public class ExpressionExecutor20090207 extends ExpressionExecutor {
 	
 	
 	public static void main (String[] args){
-		//String example = "\"aa\" + ( false? 2 : 1 )";
-		String example = "$STARTSWITH(\"hahahaha\", \"hahe\")";
-			//String example = "$ENDSWITH(\"hahahaha\", \"haha\")";
-			//String example = "true != !$DAYEQUALS($CALCDATE($SYSDATE() ,0,0 , (8+11-5*(6/3)) * (2- 59 % 7),0 ,0,0 ) , [2008-10-01])";  
+		String example = "\"aa\" + ( false? 2 : 1 )";
+		//String example = "$STARTSWITH(\"hahahaha\", \"hahe\")";
+		//String example = "$ENDSWITH(\"hahahaha\", \"haha\")";
+		//String example = "true != $DAYEQUALS($CALCDATE($SYSDATE() ,0,0 , (8+11-5*(6/3)) * (2- 59 % 7),0 ,0,0 ) , [2008-10-01])";  
 			
-			//String example = "100>10 ?  200 * 2 + 1/100>20 ?  \"p0\" : \"p1\" :  300>30 ? \"P2\" : \"p3\"";
-			//String example = "8+11-5*(6/3)";  
-			//String example = "\"12345\" <= \"223\"";
-			//String example = "12345 <= 223";
-			//String example = "[2007-01-01] <= [2008-01-01]";
+//		String example = "100>10 ?  200 * 2 + 1/100>20 ?  \"p0\" : \"p1\" :  300>30 ? \"P2\" : \"p3\"";
+//		String example = "8+11-5*(6/3)";  
+		
+		//String example = "\"12345\" <= \"223\"";
+		//String example = "12345 <= 223";
+		//String example = "[2007-01-01] <= [2008-01-01]";
 			
-			//String example = "\"12345\" >= \"223\"";
-			//String example = "12345 >= 223";
-			//String example = "[2007-01-01] >= [2008-01-01]";
+		//String example = "\"12345\" >= \"223\"";
+		//String example = "12345 >= 223";
+		//String example = "[2007-01-01] >= [2008-01-01]";
 			
-			//String example = "\"12345\" < \"223\"";
-			//String example = "12345 < 223";
-			//String example = "[2007-01-01] < [2008-01-01]";
+//		String example = "\"12345\" < \"223\"";
+//		String example = "12345 < 223";
+//		String example = "[2007-01-01] < [2008-01-01]";
 
-			//String example = "\"12345\" >\"223\"";
-			//String example = "12345 > 223";
-			//String example = "[2007-01-01] > [2008-01-01]";
+//		String example = "\"12345\" >\"223\"";
+//		String example = "12345 > 223";
+//		String example = "[2007-01-01] > [2008-01-01]";
 
 			
-			//String example = "\"12345\" == \"223\"";
-			//String example = "223 == 223.0";
-			//String example = "[2008-01-01] == [2008-01-01]";
-			//String example = "true == $DAYEQUALS([2008-01-01] , [2008-11-01])";
-			//String example = "null == $DAYEQUALS([2008-01-01] , [2008-11-01])";
-			
-			//String example = "\"12345\" != \"223\"";
-			//String example = "12345 != 223.0";
-			//String example = "[2008-01-01] != [2008-01-01]";
-			//String example = "true != $DAYEQUALS([2008-01-01] , [2008-11-01])";
-			//String example = "null != $DAYEQUALS([2008-01-01] , [2008-11-01])";
+//		String example = "\"12345\" == \"223\"";
+//		String example = "223 == 223.0";
+//		String example = "[2008-01-01] == [2008-01-01]";
+//		String example = "true == $DAYEQUALS([2008-01-01] , [2008-11-01])";
+//		String example = "null == $DAYEQUALS([2008-01-01] , [2008-11-01])";
+		
+//		String example = "\"12345\" != \"223\"";
+//		String example = "12345 != 223.0";
+//		String example = "[2008-01-01] != [2008-01-01]";
+//		String example = "true != $DAYEQUALS([2008-01-01] , [2008-11-01])";
+//		String example = "null != $DAYEQUALS([2008-01-01] , [2008-11-01])";
 
-			//String example = "true || $DAYEQUALS([2008-01-01] , [2008-11-01])";
+//		String example = "true || $DAYEQUALS([2008-01-01] , [2008-11-01])";
 
-			//String example = "true && $DAYEQUALS([2008-01-01] , [2008-11-01])";
-			
-			//String example = "$DAYEQUALS([2008-11-01] , [2008-11-01]):\"日期相等\"#1+2+3#$SYSDATE()";
-			//String example = " (2000 >= 1000 : \"路径1\") + (2000 < 1000 : \"路径2\") ";
-			//String example = "$DAYEQUALS($CALCDATE([2008-11-01 00:00:00],0,0,-2,0,0,0) , [2008-10-31 23:00:00])";
-			ExpressionExecutor ee = new ExpressionExecutor20090207();
+//		String example = "true && $DAYEQUALS([2008-01-01] , [2008-11-01])";
+		
+//		String example = "$DAYEQUALS([2008-11-01] , [2009-11-01])?\"日期相等\":\"日期不相等\"";
+//		String example = " (2000 >= 1000 ? \"路径1\" : \"路经2\") + (2000 < 1000 ? \"路径3\" : \"路径4\") ";
+//		String example = "$CALCDATE([2008-11-01 00:00:00],0,0,0,-2,0,0) == [2008-10-31 23:00:00]";
+			ExpressionExecutor ee = new ExpressionExecutor();
 			try {
 				List<ExpressionToken> list = ee.analyze(example);			
 				list = ee.convertToRPN(list);			

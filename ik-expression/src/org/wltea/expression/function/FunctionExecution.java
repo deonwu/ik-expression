@@ -120,13 +120,12 @@ public class FunctionExecution {
 			throw new IllegalArgumentException("函数名为空");
 		}
 		
-		String innerFunctionName = "_" + functionName;
 		//转化方法参数类型数组
-		Class<?>[] parameters = convertParametersType(functionName , position , args);
+		Class<?>[] parametersType = convertParametersType(functionName , position , args);
 		
 		//通过方法名和参数数组，获取方法，及方法的返回值，并转化成ExpressionToken
 		try {
-			Method funtion = FunctionExecution.class.getDeclaredMethod(innerFunctionName, parameters);
+			Method funtion = FunctionLoader.loadFunction(functionName, parametersType);
 			Class<?> returnType = funtion.getReturnType();
 			
 			//转换成ExpressionToken
