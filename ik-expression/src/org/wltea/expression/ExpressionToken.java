@@ -3,7 +3,6 @@
  */
 package org.wltea.expression;
 
-
 import org.wltea.expression.datameta.Constant;
 import org.wltea.expression.datameta.BaseDataMeta.DataType;
 import org.wltea.expression.datameta.Variable;
@@ -23,7 +22,7 @@ public class ExpressionToken {
 		//常量
 		ETOKEN_TYPE_CONSTANT ,
 		//变量
-		ETOKEN_TYPE_VARIABLE ,
+		ETOKEN_TYPE_VARIABLE ,	
 		//操作符
 		ETOKEN_TYPE_OPERATOR ,
 		//函数
@@ -68,7 +67,7 @@ public class ExpressionToken {
 			instance.tokenText=  constant.getDataValueText();
 		}
 		return instance;
-	}	
+	}
 	
 	public static ExpressionToken createVariableToken(String variableName){
 		ExpressionToken instance = new ExpressionToken();

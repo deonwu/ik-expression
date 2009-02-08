@@ -28,8 +28,6 @@ public class ExpressionParser {
 private static Map<String, Operator> operators = new HashMap<String, Operator>();
 	
 	static{
-
-		operators.put(Operator.POW.getToken(), Operator.POW);
 		operators.put(Operator.NOT.getToken(), Operator.NOT);
 		
 	//	operators.put("-", NG); 负号和减号的差异通过上下文区分
@@ -56,6 +54,8 @@ private static Map<String, Operator> operators = new HashMap<String, Operator>()
 		operators.put(Operator.APPEND.getToken(), Operator.APPEND);
 		
 		operators.put(Operator.SELECT.getToken(), Operator.SELECT);
+		operators.put(Operator.QUES.getToken(), Operator.QUES);
+		operators.put(Operator.COLON.getToken(), Operator.COLON);
 
 	}
 	

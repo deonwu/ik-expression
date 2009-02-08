@@ -34,12 +34,13 @@ private static final Set<String> OPERATOR_WORDS = new HashSet<String>();
 		OPERATOR_WORDS.add("*");
 		OPERATOR_WORDS.add("/");
 		OPERATOR_WORDS.add("%");
-		OPERATOR_WORDS.add("^");
 		OPERATOR_WORDS.add("&&");
 		OPERATOR_WORDS.add("||");
 		OPERATOR_WORDS.add("!");
 		OPERATOR_WORDS.add("#");
-		//对于?:运算符，拆分为？和：读取，作为分割符处理
+		OPERATOR_WORDS.add("?:");
+		OPERATOR_WORDS.add("?");
+		OPERATOR_WORDS.add(":");
 	}
 	
 	/**

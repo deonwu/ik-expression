@@ -3,29 +3,23 @@
  */
 package org.wltea.expression.incoding;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
 import org.wltea.expression.ExpressionExecutor;
 import org.wltea.expression.ExpressionToken;
-import org.wltea.expression.ExpressionTokenHelper;
 import org.wltea.expression.IllegalExpressionException;
-import org.wltea.expression.datameta.BaseDataMeta;
 import org.wltea.expression.datameta.Constant;
 import org.wltea.expression.datameta.Variable;
 import org.wltea.expression.datameta.VariableContainer;
 import org.wltea.expression.function.FunctionExecution;
-import org.wltea.expression.op.Operator;
-
 /**
  * 编码中的新执行器
  * @author Administrator
  * 
  */
-public class ExpressionExecutorInCoding extends ExpressionExecutor {
+public class ExpressionExecutor20090201 extends ExpressionExecutor {
 
 	private int inShortCutStatus = 0;	
 	
@@ -233,8 +227,70 @@ public class ExpressionExecutorInCoding extends ExpressionExecutor {
 						throw new IllegalExpressionException("在读入\",\"时，操作符栈弹空，没有找到相应的函数词元 ,位置：0" 
 								, expToken.getSplitor()
 								, expToken.getStartPosition());
-					}					
-				}				
+					}
+					
+				//处理读入的？	
+				}
+//				else if("?".equals(expToken.getSplitor())){
+//					//操作栈为空
+//					if(opStack.empty()){
+//						//向逆波兰式队列压入"?"
+//						_RPNExpList.add(expToken);						
+//						//将"?"压入操作符栈
+//						opStack.push(expToken);						
+//					}else{
+//						//操作栈不为空
+//						boolean doPeek = true;
+//						while(!opStack.empty() && doPeek){
+//							//取栈顶符号
+//							ExpressionToken onTopOp = opStack.peek();							
+//							if(ExpressionToken.ETokenType.ETOKEN_TYPE_OPERATOR == onTopOp.getTokenType()){
+//								if(Operator.SELECT == onTopOp.getOperator()){
+//									//栈顶为?:操作符
+//									doPeek = false;
+//									//向逆波兰式队列压入"?"
+//									_RPNExpList.add(expToken);								
+//									//将"?"压入操作符栈
+//									opStack.push(expToken);
+//								}else{								
+//									//弹出操作符栈顶的操作符
+//									opStack.pop();								
+//									//执行操作符校验
+//									ExpressionToken result = verifyOperator(onTopOp, verifyStack);
+//									//把校验结果压入检验栈
+//									verifyStack.push(result);								
+//									//校验通过，将onTopOp压入逆波兰式队列
+//									_RPNExpList.add(onTopOp);
+//								}
+//
+//							}else if(ExpressionToken.ETokenType.ETOKEN_TYPE_FUNCTION == onTopOp.getTokenType()){
+//								//遇见函数词元,结束弹出
+//								doPeek = false;
+//								//向逆波兰式队列压入"?"
+//								_RPNExpList.add(expToken);								
+//								//将"?"压入操作符栈
+//								opStack.push(expToken);								
+//							}else if(ExpressionToken.ETokenType.ETOKEN_TYPE_SPLITOR == onTopOp.getTokenType()){
+//								//遇见（或？的,结束弹出，在操作符栈中只可能遇到（和？
+//								doPeek = false;
+//								//向逆波兰式队列压入"?"
+//								_RPNExpList.add(expToken);								
+//								//将"?"压入操作符栈
+//								opStack.push(expToken);										
+//							}							
+//						}
+//						
+//						
+//					}
+//					
+//				
+//				
+//				//处理读入的:
+//				}else if(":".equals(expToken.getSplitor())){
+//					
+//					
+//					
+//				}
 			}	
 		}
 		
@@ -280,7 +336,7 @@ public class ExpressionExecutorInCoding extends ExpressionExecutor {
 		return _RPNExpList;
 	}	
 	
-	public ExpressionToken executeRPN(List<ExpressionToken> _RPNExpList){
+	public Constant executeRPN(List<ExpressionToken> _RPNExpList){
 		if(_RPNExpList == null || _RPNExpList.isEmpty()){
 			throw new IllegalArgumentException("无法执行空的逆波兰式队列");
 		}
@@ -378,7 +434,7 @@ public class ExpressionExecutorInCoding extends ExpressionExecutor {
 				}
 				//执行操作符
 				Constant result = expToken.getOperator().execute(args);
-				System.out.println(expToken.getOperator().toString() + " -- > " + result.getStringValue());
+//				System.out.println(expToken.getOperator().toString() + " -- > " + result.getStringValue());
 				ExpressionToken resultToken =  ExpressionToken.createConstantToken(result);
 				//将执行结果压入栈
 				executeStack.push(resultToken);
@@ -416,7 +472,7 @@ public class ExpressionExecutorInCoding extends ExpressionExecutor {
 						//执行函数
 						Constant[] arguments = new Constant[argsList.size()];
 						arguments = argsList.toArray(arguments);
-						Constant result = FunctionExecution.execute(expToken.getFunctionName(), expToken.getStartPosition() , arguments);
+						Constant result =  FunctionExecution.execute(expToken.getFunctionName(), expToken.getStartPosition() , arguments);
 						ExpressionToken resultToken =  ExpressionToken.createConstantToken(result);
 						//函数结果入栈
 						executeStack.push(resultToken);
@@ -490,7 +546,8 @@ public class ExpressionExecutorInCoding extends ExpressionExecutor {
 		
 		//表达式执行完成，这是执行栈内应该只有一个结果
 		if(executeStack.size() == 1){
-			return executeStack.pop();
+			ExpressionToken resultToken = executeStack.pop();
+			return resultToken.getConstant();
 		}else{
 			StringBuffer errorBuffer = new StringBuffer("\r\n");
 			while(!executeStack.empty()){
@@ -501,232 +558,8 @@ public class ExpressionExecutorInCoding extends ExpressionExecutor {
 		}
 	}
 	
-	/**
-	 * 将子窜转化成Token并加入列表
-	 * @param tokenString
-	 * @param tokens
-	 * @throws IllegalExpressionException 
-	 */
-	private void addToken(String tokenString , List<ExpressionToken> tokens) throws IllegalExpressionException{
-		
-		ExpressionToken token = null;
-		//null
-		if( ExpressionTokenHelper.isNull(tokenString)){
-			token = ExpressionToken.createConstantToken(BaseDataMeta.DataType.DATATYPE_NULL , null);
-			tokens.add(token);
-			
-		}else
-		//boolean
-		if(ExpressionTokenHelper.isBoolean( tokenString)){
-			token = ExpressionToken.createConstantToken(BaseDataMeta.DataType.DATATYPE_BOOLEAN , Boolean.valueOf(tokenString));
-			tokens.add(token);
-			
-		}else 
-		//integer
-		if(ExpressionTokenHelper.isInteger(tokenString)){
-			token = ExpressionToken.createConstantToken(BaseDataMeta.DataType.DATATYPE_INT , Integer.valueOf(tokenString));
-			tokens.add(token);
-			
-		}else
-		//long 
-		if( ExpressionTokenHelper.isLong(tokenString)){
-			token = ExpressionToken.createConstantToken(BaseDataMeta.DataType.DATATYPE_LONG , Long.valueOf(tokenString.substring(0 , tokenString.length() - 1)));
-			tokens.add(token);
-			
-		}else
-		//float 
-		if( ExpressionTokenHelper.isFloat(tokenString)){
-			token = ExpressionToken.createConstantToken(BaseDataMeta.DataType.DATATYPE_FLOAT , Float.valueOf(tokenString.substring(0 , tokenString.length() - 1)));
-			tokens.add(token);
-			
-		}else
-		//double
-		if(ExpressionTokenHelper.isDouble(tokenString)){
-			token = ExpressionToken.createConstantToken(BaseDataMeta.DataType.DATATYPE_DOUBLE , Double.valueOf(tokenString));
-			tokens.add(token);
-
-		}else				
-		//Date 
-		if(ExpressionTokenHelper.isDateTime(tokenString)){
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			try {
-				token = ExpressionToken.createConstantToken(BaseDataMeta.DataType.DATATYPE_DATE , sdf.parse(tokenString.substring(1 , tokenString.length() - 1)));
-			} catch (ParseException e) {
-				e.printStackTrace();
-				throw new IllegalExpressionException("日期参数格式错误");
-			}
-			tokens.add(token);
-			
-		}else
-		//String
-		if(ExpressionTokenHelper.isString(tokenString)){
-			token = ExpressionToken.createConstantToken(BaseDataMeta.DataType.DATATYPE_STRING , tokenString.substring(1 , tokenString.length() - 1));
-			tokens.add(token);
-		}else
-		//分割符
-		if(ExpressionTokenHelper.isSplitor(tokenString)){
-			token = ExpressionToken.createSplitorToken(tokenString);
-			tokens.add(token);
-
-		}else			
-		//函数
-		if(ExpressionTokenHelper.isFunction(tokenString)){
-			token = ExpressionToken.createFunctionToken(tokenString.substring(1 , tokenString.length()));
-			tokens.add(token);
-			
-		}else		
-		//操作符
-		if(ExpressionTokenHelper.isOperator(tokenString)){
-			Operator operator = Operator.valueOf(tokenString);
-			token = ExpressionToken.createOperatorToken(operator);
-			tokens.add(token);
-
-		}else{
-			//剩下的都应该是变量，这个判断依赖于生成的RPN是正确的前提
-			//变量,在boolean型和null型判别后，只要是字母打头的，不是$的就是变量
-			token = ExpressionToken.createVariableToken(tokenString);
-			tokens.add(token);
-	
-		}		
-	}
-	/**
-	 * 执行操作符校验
-	 * @param op
-	 * @param verifyStack
-	 * @return
-	 */
-	private ExpressionToken verifyOperator(ExpressionToken opToken , Stack<ExpressionToken> verifyStack)throws IllegalExpressionException{
-		//判定几元操作符
-		Operator op = opToken.getOperator();
-		int opType = op.getOpType();
-		//取得相应的参数个数
-		BaseDataMeta[] args = new BaseDataMeta[opType];
-		ExpressionToken argToken = null;
-		for(int i = 0 ; i < opType ; i++){			
-			if(!verifyStack.empty()){				
-				argToken = verifyStack.pop();
-				
-				if(ExpressionToken.ETokenType.ETOKEN_TYPE_CONSTANT == argToken.getTokenType()){
-					args[i] = argToken.getConstant();
-					
-				}else if(ExpressionToken.ETokenType.ETOKEN_TYPE_VARIABLE == argToken.getTokenType()){
-//				//验证VariableContainer中变量声明
-//					Variable var = VariableContainer.getVariable(argToken.getVariable().getVariableName());
-//					if(var == null || var.getDataType() == null){
-//						throw new IllegalExpressionException("表达式不合法，变量\"" + argToken.toString() + "\"缺少定义;位置：" + argToken.getStartPosition()
-//								, opToken.toString()
-//								, opToken.getStartPosition());						
-//					}else{
-//						//设置Token中的变量类型定义
-//						argToken.getVariable().setDataType(var.getDataType());
-//					}					
-					args[i] = argToken.getVariable();
-					
-				}else{
-					//如果取到的Token不是常量，也不是变量，则抛出错误
-					throw new IllegalExpressionException("表达式不合法，操作符\"" + op.getToken() + "\"参数错误;位置：" + argToken.getStartPosition()
-							, opToken.toString()
-							, opToken.getStartPosition());						
-				}
-				
-			}else{
-				//栈已经弹空，没有取道操作符对应的操作数
-				throw new IllegalExpressionException("表达式不合法，操作符\"" + op.getToken() + "\"找不到相应的参数，或参数个数不足;"					
-								, opToken.toString()
-								, opToken.getStartPosition());						
-			}
-		}
-		//执行操作符校验，并返回校验
-		Constant result = op.verify(opToken.getStartPosition() , args);
-		return ExpressionToken.createConstantToken(result);		 
-
-	}
-
-	/**
-	 * 执行函数校验
-	 * @param op
-	 * @param verifyStack
-	 * @return
-	 */
-	private ExpressionToken verifyFunction(ExpressionToken funtionToken , Stack<ExpressionToken> verifyStack)throws IllegalExpressionException{
-		
-		if(!verifyStack.empty()){
-
-			/*****
-			 * 在转化RPN过程中进行校验时，函数的“)”括号不会压入verifyStack
-			 * 但如果将RPN和校验分开，则必须检查栈顶的")"
-			 */
-//			ExpressionToken onTop = verifyStack.pop();
-//			//检查在遇到函数词元后，执行栈中弹出的第一个词元是否为“）”
-//			if(")".equals(onTop.getSplitor())){
-				
-				boolean doPop = true;
-				List<BaseDataMeta> args = new ArrayList<BaseDataMeta>();
-				ExpressionToken parameter = null;
-				//弹出函数的参数，直到遇到"("时终止
-				while(doPop && !verifyStack.empty()){
-					parameter = verifyStack.pop();
-					
-					if(ExpressionToken.ETokenType.ETOKEN_TYPE_CONSTANT == parameter.getTokenType()){
-						//常量
-						args.add(parameter.getConstant());
-						
-					}else if(ExpressionToken.ETokenType.ETOKEN_TYPE_VARIABLE == parameter.getTokenType()){
-//						//验证变量声明	
-//						Variable var = VariableContainer.getVariable(parameter.getVariable().getVariableName());
-//						if(var == null || var.getDataType() == null){
-//							throw new IllegalExpressionException("表达式不合法，变量\"" + parameter.toString() + "\"缺少定义;位置:" + parameter.getStartPosition()
-//										, parameter.toString()
-//										, parameter.getStartPosition());						
-//						}else{
-//							//设置Token中的变量类型定义
-//							parameter.getVariable().setDataType(var.getDataType());
-//						}
-						args.add(parameter.getVariable());
-						
-					}else if("(".equals(parameter.getSplitor())){
-						doPop = false;
-						
-					}else{
-						//没有找到应该存在的右括号
-						throw new IllegalExpressionException("表达式不合法，函数\"" + funtionToken.getFunctionName()+ "\"遇到非法参数" + parameter.toString() + ";位置:" + parameter.getStartPosition()
-								, funtionToken.toString()
-								, funtionToken.getStartPosition());						
-					}
-				}
-				
-				if(doPop && verifyStack.empty()){
-					//操作栈以空，没有找到函数的左括号（
-					throw new IllegalExpressionException("表达式不合法，函数\"" + funtionToken.getFunctionName() + "\"缺少\"(\"；位置:" + (funtionToken.getStartPosition() + funtionToken.toString().length())
-							, funtionToken.toString()
-							, funtionToken.getStartPosition());						
-				}
-				
-				//校验函数
-				BaseDataMeta[] arguments = new BaseDataMeta[args.size()];
-				arguments = args.toArray(arguments);
-				Constant result = FunctionExecution.varify(funtionToken.getFunctionName(), funtionToken.getStartPosition() , arguments);
-				return ExpressionToken.createConstantToken(result);
-				
-//			}else{
-//				//没有找到应该存在的右括号
-//				throw new IllegalExpressionException("表达式不合法，函数\"" + funtionToken.getFunctionName() + "\"缺少\")\";位置:" + onTop.getStartPosition()
-//						, funtionToken.toString()
-//						, funtionToken.getStartPosition());
-//				
-//			}
-			
-		}else{
-			//没有找到应该存在的右括号
-			throw new IllegalExpressionException("表达式不合法，函数\"" + funtionToken.getFunctionName() + "\"不完整" 
-					, funtionToken.toString()
-					, funtionToken.getStartPosition());
-		}
-	}
-	
-	
 	public static void main (String[] args){
-		ExpressionExecutorInCoding ee = new ExpressionExecutorInCoding();
+		ExpressionExecutor20090201 ee = new ExpressionExecutor20090201();
 		//String example = "\"aa\" + (false:1)";
 		//String example = "$STARTSWITH(\"hahahaha\", \"hahe\")";
 		String example = "$ENDSWITH(\"hahahaha\", \"haha\")";
@@ -782,6 +615,9 @@ public class ExpressionExecutorInCoding extends ExpressionExecutor {
 			System.out.println("s1 == s2 ? " + s1.equals(s2));
 
 			System.out.println(ee.executeRPN(tokens));
+			
+			String i = 100>10 ?  200<20 ?  "path0" : "path1" : 100>10 ? "path2" : "path3";
+			System.out.println(i);
 		} catch (IllegalExpressionException e) {
 
 			e.printStackTrace();

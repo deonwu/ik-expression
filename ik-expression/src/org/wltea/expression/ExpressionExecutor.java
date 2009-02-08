@@ -50,7 +50,7 @@ public class ExpressionExecutor {
 	
 	/**
 	 * 将正常表达式词元序列，转换成逆波兰式序列
-	 * 该转换过程不对表达式的语法做检查
+	 * 同时检查表达式语法
 	 * @param expTokens
 	 * @return
 	 */
@@ -299,7 +299,7 @@ public class ExpressionExecutor {
 	 * 执行逆波兰式
 	 * @return
 	 */
-	public ExpressionToken executeRPN(List<ExpressionToken> _RPNExpList){
+	public Constant executeRPN(List<ExpressionToken> _RPNExpList)throws IllegalExpressionException{
 		if(_RPNExpList == null || _RPNExpList.isEmpty()){
 			throw new IllegalArgumentException("无法执行空的逆波兰式队列");
 		}
@@ -413,7 +413,8 @@ public class ExpressionExecutor {
 		
 		//表达式执行完成，这是执行栈内应该只有一个结果
 		if(executeStack.size() == 1){
-			return executeStack.pop();
+			ExpressionToken resultToken = executeStack.pop();
+			return resultToken.getConstant();
 		}else{
 			StringBuffer errorBuffer = new StringBuffer("\r\n");
 			while(!executeStack.empty()){
@@ -590,7 +591,7 @@ public class ExpressionExecutor {
 	 * @param tokens
 	 * @throws IllegalExpressionException 
 	 */
-	private void addToken(String tokenString , List<ExpressionToken> tokens) throws IllegalExpressionException{
+	protected void addToken(String tokenString , List<ExpressionToken> tokens) throws IllegalExpressionException{
 		
 		ExpressionToken token = null;
 		//null
@@ -678,7 +679,7 @@ public class ExpressionExecutor {
 	 * @param verifyStack
 	 * @return
 	 */
-	private ExpressionToken verifyOperator(ExpressionToken opToken , Stack<ExpressionToken> verifyStack)throws IllegalExpressionException{
+	protected ExpressionToken verifyOperator(ExpressionToken opToken , Stack<ExpressionToken> verifyStack)throws IllegalExpressionException{
 		//判定几元操作符
 		Operator op = opToken.getOperator();
 		int opType = op.getOpType();
@@ -731,7 +732,7 @@ public class ExpressionExecutor {
 	 * @param verifyStack
 	 * @return
 	 */
-	private ExpressionToken verifyFunction(ExpressionToken funtionToken , Stack<ExpressionToken> verifyStack)throws IllegalExpressionException{
+	protected ExpressionToken verifyFunction(ExpressionToken funtionToken , Stack<ExpressionToken> verifyStack)throws IllegalExpressionException{
 		
 		if(!verifyStack.empty()){
 
@@ -804,70 +805,6 @@ public class ExpressionExecutor {
 			throw new IllegalExpressionException("表达式不合法，函数\"" + funtionToken.getFunctionName() + "\"不完整" 
 					, funtionToken.toString()
 					, funtionToken.getStartPosition());
-		}
-	}
-	
-	
-	public static void main (String[] args){
-	//	String example = "\"aa\" + (false:1)";
-		//String example = "$STARTSWITH(\"hahahaha\", \"hahe\")";
-		//String example = "$ENDSWITH(\"hahahaha\", \"haha\")";
-		//String example = "true != !$DAYEQUALS($CALCDATE($SYSDATE() ,0,0 , (8+11-5*(6/3)) * (2- 59 % 7),0 ,0,0 ) , [2008-10-01])";  
-		
-		String example = "8+11-5*(6/3)";  
-		//String example = "\"12345\" <= \"223\"";
-		//String example = "12345 <= 223";
-		//String example = "[2007-01-01] <= [2008-01-01]";
-		
-		//String example = "\"12345\" >= \"223\"";
-		//String example = "12345 >= 223";
-		//String example = "[2007-01-01] >= [2008-01-01]";
-		
-		//String example = "\"12345\" < \"223\"";
-		//String example = "12345 < 223";
-		//String example = "[2007-01-01] < [2008-01-01]";
-
-		//String example = "\"12345\" >\"223\"";
-		//String example = "12345 > 223";
-		//String example = "[2007-01-01] > [2008-01-01]";
-
-		
-		//String example = "\"12345\" == \"223\"";
-		//String example = "223 == 223.0";
-		//String example = "[2008-01-01] == [2008-01-01]";
-		//String example = "true == $DAYEQUALS([2008-01-01] , [2008-11-01])";
-		//String example = "null == $DAYEQUALS([2008-01-01] , [2008-11-01])";
-		
-		//String example = "\"12345\" != \"223\"";
-		//String example = "12345 != 223.0";
-		//String example = "[2008-01-01] != [2008-01-01]";
-		//String example = "true != $DAYEQUALS([2008-01-01] , [2008-11-01])";
-		//String example = "null != $DAYEQUALS([2008-01-01] , [2008-11-01])";
-
-		//String example = "true || $DAYEQUALS([2008-01-01] , [2008-11-01])";
-
-		//String example = "true && $DAYEQUALS([2008-01-01] , [2008-11-01])";
-		
-		//String example = "$DAYEQUALS([2008-11-01] , [2008-11-01]):\"日期相等\"#1+2+3#$SYSDATE()";
-		//String example = " (2000 >= 1000 : \"路径1\") + (2000 < 1000 : \"路径2\") ";
-		//String example = "$DAYEQUALS($CALCDATE([2008-11-01 00:00:00],0,0,-2,0,0,0) , [2008-10-31 23:00:00])";
-		ExpressionExecutor ee = new ExpressionExecutor();
-		try {
-			List<ExpressionToken> list = ee.analyze(example);			
-			list = ee.convertToRPN(list);			
-			
-			String s1 = ee.tokensToString(list);
-			System.out.println("s1 -- " + s1);
-			List<ExpressionToken> tokens = ee.stringToTokens(s1);
-			String s2 = ee.tokensToString(tokens);
-			System.out.println("s2 -- " + s2);
-			System.out.println("s1 == s2 ? " + s1.equals(s2));
-
-			System.out.println(ee.executeRPN(tokens));
-			
-		} catch (IllegalExpressionException e) {
-
-			e.printStackTrace();
 		}
 	}
 	

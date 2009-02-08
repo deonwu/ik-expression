@@ -12,6 +12,7 @@ import org.wltea.expression.datameta.BaseDataMeta;
 import org.wltea.expression.datameta.Constant;
 import org.wltea.expression.op.define.Op_AND;
 import org.wltea.expression.op.define.Op_APPEND;
+import org.wltea.expression.op.define.Op_COLON;
 import org.wltea.expression.op.define.Op_DIV;
 import org.wltea.expression.op.define.Op_EQ;
 import org.wltea.expression.op.define.Op_GE;
@@ -26,6 +27,7 @@ import org.wltea.expression.op.define.Op_NG;
 import org.wltea.expression.op.define.Op_NOT;
 import org.wltea.expression.op.define.Op_OR;
 import org.wltea.expression.op.define.Op_PLUS;
+import org.wltea.expression.op.define.Op_QUES;
 import org.wltea.expression.op.define.Op_SELECT;
 
 /**
@@ -36,9 +38,6 @@ import org.wltea.expression.op.define.Op_SELECT;
  * @version 2.0
  */
 public enum Operator{
-	
-	POW("^" , 90 , 2),
-	
 	
 	//逻辑否
 	NOT("!" , 80 , 1),
@@ -81,7 +80,10 @@ public enum Operator{
 	//集合添加
 	APPEND("#" , 10 , 2),
 	
-	//三元选择，其中？和：作为分割符对待
+	
+	//三元选择
+	QUES("?" , 0 , 0),
+	COLON(":" , 0 , 0),
 	SELECT("?:" , 0 , 3)
 	;
 	
@@ -89,8 +91,6 @@ public enum Operator{
 	
 	static{
 
-		OP_RESERVE_WORD.add(POW.getToken());
-		
 		OP_RESERVE_WORD.add(NOT.getToken());
 		OP_RESERVE_WORD.add(NG.getToken());
 		
@@ -117,14 +117,15 @@ public enum Operator{
 		OP_RESERVE_WORD.add(APPEND.getToken());
 
 		OP_RESERVE_WORD.add(SELECT.getToken());
+		OP_RESERVE_WORD.add(QUES.getToken());
+		OP_RESERVE_WORD.add(COLON.getToken());
 	}
 	
 	private static final HashMap<Operator , IOperatorExecution> OP_EXEC_MAP 
 					= new HashMap<Operator , IOperatorExecution>();
 	
 	static{
-		//OP_EXEC_MAP.put(POW, new Op_POW());
-		
+	
 		OP_EXEC_MAP.put(NOT, new Op_NOT());
 		OP_EXEC_MAP.put(NG, new Op_NG());		
 		
@@ -150,6 +151,8 @@ public enum Operator{
 		OP_EXEC_MAP.put(APPEND, new Op_APPEND());
 		
 		OP_EXEC_MAP.put(SELECT, new Op_SELECT());
+		OP_EXEC_MAP.put(QUES, new Op_QUES());
+		OP_EXEC_MAP.put(COLON, new Op_COLON());
 		
 	}
 	
@@ -232,13 +235,5 @@ public enum Operator{
 		}
 		return opExec.verify(opPositin, args);
 	}
-	
-	
-	
-	public static void main(String[] args){
-		PLUS.execute(null);
-		MINUS.execute(null);
-//		System.out.println(PLUS.toString());
-//		System.out.println(Float.parseFloat("2323.44F"));
-	}
+
 }

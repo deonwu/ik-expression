@@ -104,8 +104,7 @@ public class ExpressionTokenHelper {
 	 * @return
 	 */
 	public static boolean isSplitor(String s){
-		return ",".equals(s) || "(".equals(s) || ")".equals(s) 
-							|| "{".equals(s) || "}".equals(s);
+		return ",".equals(s) || "(".equals(s) || ")".equals(s); 
 	}
 		
 	/**
@@ -146,11 +145,5 @@ public class ExpressionTokenHelper {
 			return false;
 		}
 	}
-	
 
-	public static void main(String[] args){
-		System.out.println(isString("ddfsaf"));
-		System.out.println(Float.parseFloat("2323.44F"));
-		System.out.println(("a  b ").split("\\s").length);
-	}	
 }

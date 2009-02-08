@@ -18,7 +18,7 @@ import org.wltea.expression.format.Element.ElementType;
  */
 public class SplitorTypeReader implements ElementReader {
 
-	public static final String SPLITOR_CHAR ="(),?:";//所有分割符
+	public static final String SPLITOR_CHAR ="(),";//所有分割符
 	
 	/**
 	 * 从流中读取分割符类型的ExpressionToken

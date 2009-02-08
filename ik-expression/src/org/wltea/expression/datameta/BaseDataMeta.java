@@ -37,6 +37,8 @@ public abstract class BaseDataMeta {
 		DATATYPE_DATE ,
 		//集合对象
 		DATATYPE_COLLECTION,
+		//引用
+		DATATYPE_REFERENCE,		
 		;
 
 	}

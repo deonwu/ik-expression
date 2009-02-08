@@ -42,9 +42,7 @@ public class ExpressionEvaluator {
 			//转化RPN，并验证
 			expTokens = ee.convertToRPN(expTokens);
 			//执行RPN
-			ExpressionToken resultToken = ee.executeRPN(expTokens);			
-			//转化result 到Object
-			Constant constant = resultToken.getConstant();
+			Constant constant = ee.executeRPN(expTokens);	
 			return constant.toJavaObject();
 
 		} catch (IllegalExpressionException e) {
