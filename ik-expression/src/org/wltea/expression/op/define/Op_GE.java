@@ -6,6 +6,8 @@ package org.wltea.expression.op.define;
 import org.wltea.expression.IllegalExpressionException;
 import org.wltea.expression.datameta.BaseDataMeta;
 import org.wltea.expression.datameta.Constant;
+import org.wltea.expression.datameta.Reference;
+import org.wltea.expression.datameta.BaseDataMeta.DataType;
 import org.wltea.expression.op.IOperatorExecution;
 import org.wltea.expression.op.Operator;
 
@@ -19,7 +21,7 @@ public class Op_GE implements IOperatorExecution {
 
 	public static final Operator THIS_OPERATOR = Operator.GE;
 	
-	public Constant execute(Constant[] args) {
+	public Constant execute(Constant[] args) throws IllegalExpressionException {
 		if(args == null || args.length != 2){
 			throw new IllegalArgumentException("操作符\"" + THIS_OPERATOR.getToken() + "参数个数不匹配");
 		}
@@ -34,7 +36,19 @@ public class Op_GE implements IOperatorExecution {
 		if(null == second || null == second.getDataValue()){
 			//抛NULL异常
 			throw new NullPointerException("操作符\"" + THIS_OPERATOR.getToken() + "\"参数为空");
+		}	
+		
+		//如果第一参数为引用，则执行引用
+		if(DataType.DATATYPE_REFERENCE == first.getDataType()){
+			Reference firstRef = (Reference)first.getDataValue();
+			first = firstRef.execute();
+		}
+		//如果第二参数为引用，则执行引用
+		if(DataType.DATATYPE_REFERENCE == second.getDataType()){
+			Reference secondRef = (Reference)second.getDataValue();
+			second = secondRef.execute();
 		}		
+		
 		
 		if(BaseDataMeta.DataType.DATATYPE_DATE ==  first.getDataType()
 				&& BaseDataMeta.DataType.DATATYPE_DATE ==  second.getDataType()){

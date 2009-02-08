@@ -336,7 +336,7 @@ public class ExpressionExecutor20090201 extends ExpressionExecutor {
 		return _RPNExpList;
 	}	
 	
-	public Constant executeRPN(List<ExpressionToken> _RPNExpList){
+	public Constant executeRPN(List<ExpressionToken> _RPNExpList) throws IllegalExpressionException{
 		if(_RPNExpList == null || _RPNExpList.isEmpty()){
 			throw new IllegalArgumentException("无法执行空的逆波兰式队列");
 		}

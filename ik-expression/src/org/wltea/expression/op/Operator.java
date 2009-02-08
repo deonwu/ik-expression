@@ -210,7 +210,7 @@ public enum Operator{
 	 * @param args 注意args中的参数由于是从栈中按LIFO顺序弹出的，所以必须从尾部倒着取数
 	 * @return Constant 常量型的执行结果
 	 */
-	public Constant execute(Constant[] args){
+	public Constant execute(Constant[] args)throws IllegalExpressionException{
 		
 		IOperatorExecution opExec = OP_EXEC_MAP.get(this);
 		if(opExec == null){

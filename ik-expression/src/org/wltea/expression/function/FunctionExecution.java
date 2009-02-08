@@ -11,6 +11,8 @@ import java.util.List;
 import org.wltea.expression.IllegalExpressionException;
 import org.wltea.expression.datameta.BaseDataMeta;
 import org.wltea.expression.datameta.Constant;
+import org.wltea.expression.datameta.Reference;
+import org.wltea.expression.datameta.BaseDataMeta.DataType;
 
 
 /**
@@ -30,11 +32,22 @@ public class FunctionExecution {
 	 * @param position
 	 * @param args 注意args中的参数由于是从栈中按LIFO顺序弹出的，所以必须从尾部倒着取数
 	 * @return
+	 * @throws IllegalExpressionException 
 	 */
 	@SuppressWarnings("unchecked")
-	public static Constant execute(String functionName , int position , Constant[] args){
+	public static Constant execute(String functionName , int position , Constant[] args) throws IllegalExpressionException{
 		if(functionName == null){
 			throw new IllegalArgumentException("函数名为空");
+		}
+		if(args == null){
+			throw new IllegalArgumentException("函数参数列表为空");
+		}
+		for(int i = 0 ; i < args.length ; i++){
+			//如果参数为引用类型，则执行引用
+			if(DataType.DATATYPE_REFERENCE == args[i].getDataType()){
+				Reference ref = (Reference)args[i].getDataValue();
+				args[i] = ref.execute();
+			}			
 		}
 		
 		//转化方法参数类型数组

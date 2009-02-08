@@ -129,15 +129,5 @@ public class FunctionLoader {
 			return m.invoke(_class.newInstance(), parameters);
 		}
 	}
-	
-	public static void main(String[] a) {
-		Class[] cs = new Class[]{String.class,String.class};
-		try {
-			System.out.println(loadFunction("STARTSWITH", cs));
-			System.out.println(invokeFunction("STARTSWITH",cs, new Object[]{"aabbcc","aabb"} ));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
+
 }

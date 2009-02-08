@@ -26,25 +26,23 @@ public class Reference {
 		this.token = token;
 		this.arguments = args;
 	}
-
-
+	
 	public Constant[] getArgs() {
 		return arguments;
 	}
-
+	
 	public void setArgs(Constant[] args) {
 		this.arguments = args;
 	}
-
-
+	
 	public ExpressionToken getToken() {
 		return token;
 	}
 
-
 	public void setToken(ExpressionToken token) {
 		this.token = token;
 	} 
+	
 	/**
 	 * 执行引用对象指待的表达式（操作符或者函数）
 	 * @return

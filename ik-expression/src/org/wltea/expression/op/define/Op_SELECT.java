@@ -6,6 +6,8 @@ package org.wltea.expression.op.define;
 import org.wltea.expression.IllegalExpressionException;
 import org.wltea.expression.datameta.BaseDataMeta;
 import org.wltea.expression.datameta.Constant;
+import org.wltea.expression.datameta.Reference;
+import org.wltea.expression.datameta.BaseDataMeta.DataType;
 import org.wltea.expression.op.IOperatorExecution;
 import org.wltea.expression.op.Operator;
 
@@ -17,13 +19,58 @@ public class Op_SELECT implements IOperatorExecution {
 
 	public static final Operator THIS_OPERATOR = Operator.SELECT;
 
-
 	/* (non-Javadoc)
 	 * @see org.wltea.expression.op.IOperatorExecution#execute(org.wltea.expression.datameta.Constant[])
 	 */
-	public Constant execute(Constant[] args) {
-		// TODO Auto-generated method stub
-		return null;
+	public Constant execute(Constant[] args) throws IllegalExpressionException {
+		//参数校验
+		if(args == null || args.length != 3){
+			throw new IllegalArgumentException("操作符\"" + THIS_OPERATOR.getToken() + "操作缺少参数");
+		}		
+		Constant first = args[2];
+		if(null == first || null == first.getDataValue()){
+			//抛NULL异常
+			throw new NullPointerException("操作符\"" + THIS_OPERATOR.getToken() + "\"第一参数为空");
+		}
+		Constant second = args[1];
+		if(null == second || null == second.getDataValue()){
+			//抛NULL异常
+			throw new NullPointerException("操作符\"" + THIS_OPERATOR.getToken() + "\"第二参数为空");
+		}		
+		Constant third = args[0];
+		if(null == third || null == third.getDataValue()){
+			//抛NULL异常
+			throw new NullPointerException("操作符\"" + THIS_OPERATOR.getToken() + "\"第三参数为空");
+		}
+		
+		//如果第一参数为引用，则执行引用
+		if(DataType.DATATYPE_REFERENCE == first.getDataType()){
+			Reference firstRef = (Reference)first.getDataValue();
+			first = firstRef.execute();
+		}
+		if( BaseDataMeta.DataType.DATATYPE_BOOLEAN ==  first.getDataType()){
+			if(first.getBooleanValue()){
+				//选择第二参数
+				//如果第二参数为引用，则执行引用
+				if(DataType.DATATYPE_REFERENCE == second.getDataType()){
+					Reference secondRef = (Reference)second.getDataValue();
+					second = secondRef.execute();
+				}				
+				return second;
+			}else{
+				//选择第三参数
+				//如果第三参数为引用，则执行引用
+				if(DataType.DATATYPE_REFERENCE == third.getDataType()){
+					Reference thirdRef = (Reference)third.getDataValue();
+					third = thirdRef.execute();
+				}				
+				return third;				
+			}
+			
+		}else{
+			//抛异常
+			throw new IllegalArgumentException("操作符\"" + THIS_OPERATOR.getToken() + "\"第一参数类型错误");
+		}
 	}
 
 	/* (non-Javadoc)
