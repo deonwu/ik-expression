@@ -52,7 +52,13 @@ public class Op_PLUS implements IOperatorExecution {
 			throw new IllegalArgumentException("操作符\"" + THIS_OPERATOR.getToken() + "\"参数类型错误");
 
 		}else if(BaseDataMeta.DataType.DATATYPE_STRING ==  first.getDataType()
-				|| BaseDataMeta.DataType.DATATYPE_STRING == second.getDataType()){
+				|| BaseDataMeta.DataType.DATATYPE_STRING == second.getDataType()
+				|| BaseDataMeta.DataType.DATATYPE_NULL ==  first.getDataType()
+				|| BaseDataMeta.DataType.DATATYPE_NULL ==  second.getDataType()
+				|| BaseDataMeta.DataType.DATATYPE_BOOLEAN ==  first.getDataType()
+				|| BaseDataMeta.DataType.DATATYPE_BOOLEAN ==  second.getDataType()
+				|| BaseDataMeta.DataType.DATATYPE_DATE ==  first.getDataType()
+				|| BaseDataMeta.DataType.DATATYPE_DATE ==  second.getDataType()){
 			String firstString = "";
 			String secondString = "";
 			//字符窜连接运算,如果参数是null，则当作空字符窜处理
@@ -69,16 +75,6 @@ public class Op_PLUS implements IOperatorExecution {
 			//抛NULL异常
 			throw new NullPointerException("操作符\"" + THIS_OPERATOR.getToken() + "\"参数为空");
 		
-		}else if( BaseDataMeta.DataType.DATATYPE_NULL ==  first.getDataType()
-					|| BaseDataMeta.DataType.DATATYPE_NULL ==  second.getDataType()
-					|| BaseDataMeta.DataType.DATATYPE_BOOLEAN ==  first.getDataType()
-					|| BaseDataMeta.DataType.DATATYPE_BOOLEAN ==  second.getDataType()
-					|| BaseDataMeta.DataType.DATATYPE_DATE ==  first.getDataType()
-					|| BaseDataMeta.DataType.DATATYPE_DATE ==  second.getDataType()
-					){
-			//抛异常
-			throw new IllegalArgumentException("操作符\"" + THIS_OPERATOR.getToken() + "\"参数类型错误"	);
-
 		}else if(BaseDataMeta.DataType.DATATYPE_DOUBLE == first.getDataType()
 				|| BaseDataMeta.DataType.DATATYPE_DOUBLE == second.getDataType()){
 			
@@ -136,23 +132,16 @@ public class Op_PLUS implements IOperatorExecution {
 		}		
 
 		if(BaseDataMeta.DataType.DATATYPE_STRING ==  first.getDataType()
-				|| BaseDataMeta.DataType.DATATYPE_STRING == second.getDataType()){
+				|| BaseDataMeta.DataType.DATATYPE_STRING == second.getDataType()
+				|| BaseDataMeta.DataType.DATATYPE_NULL ==  first.getDataType()
+				|| BaseDataMeta.DataType.DATATYPE_NULL ==  second.getDataType()
+				|| BaseDataMeta.DataType.DATATYPE_BOOLEAN ==  first.getDataType()
+				|| BaseDataMeta.DataType.DATATYPE_BOOLEAN ==  second.getDataType()
+				|| BaseDataMeta.DataType.DATATYPE_DATE ==  first.getDataType()
+				|| BaseDataMeta.DataType.DATATYPE_DATE ==  second.getDataType()){
 			
 			return new Constant(BaseDataMeta.DataType.DATATYPE_STRING , null);
 			
-		}else if( BaseDataMeta.DataType.DATATYPE_NULL ==  first.getDataType()
-					|| BaseDataMeta.DataType.DATATYPE_NULL ==  second.getDataType()
-					|| BaseDataMeta.DataType.DATATYPE_BOOLEAN ==  first.getDataType()
-					|| BaseDataMeta.DataType.DATATYPE_BOOLEAN ==  second.getDataType()
-					|| BaseDataMeta.DataType.DATATYPE_DATE ==  first.getDataType()
-					|| BaseDataMeta.DataType.DATATYPE_DATE ==  second.getDataType()
-					){
-			//抛异常
-			throw new IllegalExpressionException("操作符\"" + THIS_OPERATOR.getToken() + "\"参数类型错误"
-					, THIS_OPERATOR.getToken()
-					, opPositin
-					);
-
 		}else if(BaseDataMeta.DataType.DATATYPE_DOUBLE == first.getDataType()
 				|| BaseDataMeta.DataType.DATATYPE_DOUBLE == second.getDataType()){
 			return new Constant(BaseDataMeta.DataType.DATATYPE_DOUBLE , Double.valueOf(0.0));

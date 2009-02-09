@@ -73,9 +73,5 @@ public class ExpressionEvaluator {
 		return ee.tokensToString(list);
 	}
 	
-	public static void main(String[] args) {
-		String example = "$DAYEQUALS($CALCDATE([2008-11-01 00:00:00],0,0,-2,0,0,0) , [2008-10-31 23:00:00])";
-		Object result = ExpressionEvaluator.evaluate(example, null);
-		System.out.println(result);
-	}
+
 }

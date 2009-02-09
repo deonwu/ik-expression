@@ -27,7 +27,6 @@ import org.wltea.expression.op.Operator;
  * @author 林良益，卓诗垚
  * @version 2.0 
  * 2008-09-18
- * @version 2.0
  */
 public class ExpressionExecutor {
 	
