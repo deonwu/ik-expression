@@ -9,9 +9,9 @@ import java.util.Map;
 /**
  * 表达式上下文变量容器
  * 使用本地线程对象，传递上下文变量映射表
- * @author 林良益
+ * @author 林良益，卓诗垚
+ * @version 2.0 
  * 2008-09-23
- * @version 2.0
  */
 public class VariableContainer {
 	

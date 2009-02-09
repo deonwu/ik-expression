@@ -13,9 +13,9 @@ import org.wltea.expression.op.Operator;
 
 /**
  * 算术取模操作
- * @author 林良益
+ * @author 林良益，卓诗垚
+ * @version 2.0 
  * Sep 26, 2008
- * @version 2.0
  */
 public class Op_MOD implements IOperatorExecution {
 

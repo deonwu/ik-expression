@@ -12,8 +12,8 @@ import org.wltea.expression.format.reader.ElementReaderFactory;
 
 /**
  * 表达式读取器
- * @author 卓诗垚
- * @version 2.0
+ * @author 林良益，卓诗垚
+ * @version 2.0 
  * Sep 21, 2008
  */
 public class ExpressionReader extends StringReader {

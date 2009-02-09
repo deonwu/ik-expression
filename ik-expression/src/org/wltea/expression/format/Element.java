@@ -5,7 +5,7 @@ package org.wltea.expression.format;
 
 /**
  * 表达式词元
- * @author 卓诗垚
+ * @@author 林良益，卓诗垚
  * @version 2.0 
  * Sep 23, 2008
  * 

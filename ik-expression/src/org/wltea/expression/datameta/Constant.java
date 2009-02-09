@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 /**
  * 常量数据描述
- * @author 林良益
+ * @author 林良益，卓诗垚
+ * @version 2.0 
  * 2008-09-23
- * @version 2.0
  */
 public class Constant extends BaseDataMeta {
 	

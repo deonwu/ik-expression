@@ -16,7 +16,8 @@ import org.wltea.expression.datameta.VariableContainer;
 import org.wltea.expression.function.FunctionExecution;
 /**
  * 编码中的新执行器
- * @author Administrator
+ * @author 林良益，卓诗垚
+ * @version 2.0 
  * 
  */
 public class ExpressionExecutor20090201 extends ExpressionExecutor {

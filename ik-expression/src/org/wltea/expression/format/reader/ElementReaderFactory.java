@@ -10,8 +10,8 @@ import org.wltea.expression.format.FormatException;
 
 /**
  * 词元读取器工厂
- * @author 卓诗垚
- * @version 2.0
+ * @author 林良益，卓诗垚
+ * @version 2.0 
  * Oct 9, 2008
  */
 public class ElementReaderFactory {

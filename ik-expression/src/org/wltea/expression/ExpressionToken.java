@@ -10,9 +10,9 @@ import org.wltea.expression.op.Operator;
 
 /**
  * 表达式解析词元对象
- * @author 林良益
+ * @author 林良益，卓诗垚
+ * @version 2.0 
  * 2008-09-18
- * @version 2.0
  */
 public class ExpressionToken {
 	

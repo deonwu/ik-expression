@@ -17,9 +17,9 @@ import org.wltea.expression.op.Operator;
 
 /**
  * 集合添加操作
- * @author 林良益
+ * @author 林良益，卓诗垚
+ * @version 2.0 
  * Oct 8, 2008
- * @version 2.0
  */
 public class Op_APPEND implements IOperatorExecution {
 

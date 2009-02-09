@@ -33,9 +33,9 @@ import org.wltea.expression.op.define.Op_SELECT;
 /**
  * 表达式操作符接口
  * 操作符优先级数值越大，优先级越高
- * @author 林良益
+ * @author 林良益，卓诗垚
+ * @version 2.0 
  * 2008-09-17
- * @version 2.0
  */
 public enum Operator{
 	

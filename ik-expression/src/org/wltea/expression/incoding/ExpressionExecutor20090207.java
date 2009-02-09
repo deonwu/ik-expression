@@ -19,7 +19,8 @@ import org.wltea.expression.datameta.BaseDataMeta.DataType;
 import org.wltea.expression.op.Operator;
 
 /**
- * @author Administrator
+ * @author 林良益，卓诗垚
+ * @version 2.0 
  *
  */
 public class ExpressionExecutor20090207 extends ExpressionExecutor {

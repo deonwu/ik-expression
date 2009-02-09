@@ -14,9 +14,9 @@ import org.wltea.expression.op.Operator;
 
 /**
  * 算术取负操作
- * @author 林良益
+ * @author 林良益，卓诗垚
+ * @version 2.0 
  * 2008-09-26
- * @version 2.0
  */
 public class Op_NG implements IOperatorExecution {
 

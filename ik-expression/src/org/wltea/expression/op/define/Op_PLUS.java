@@ -15,8 +15,8 @@ import org.wltea.expression.op.Operator;
 /**
  * 加号操作实现
  * 加号操作包括了数学加法和字符窜连接
- * @author 林良益
- * @version 2.0
+ * @author 林良益，卓诗垚
+ * @version 2.0 
  */
 public class Op_PLUS implements IOperatorExecution {
 

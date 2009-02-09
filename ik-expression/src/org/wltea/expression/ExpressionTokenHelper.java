@@ -3,14 +3,10 @@ package org.wltea.expression;
 import org.wltea.expression.op.Operator;
 
 /**
- * 
- */
-
-/**
  * 表达式字符窜词元处理辅助类
  * 这个类，考虑到性能因素，对词元类型，只进行简单辨别，词元的完整性依赖于RPN已经经过合法校验
- * @author 林良益
- * @version 2.0
+ * @author 林良益，卓诗垚
+ * @version 2.0 
  */
 public class ExpressionTokenHelper {
 	

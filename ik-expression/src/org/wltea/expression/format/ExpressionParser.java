@@ -19,8 +19,8 @@ import org.wltea.expression.format.Element.ElementType;
 import org.wltea.expression.op.Operator;
 
 /**
- * @author 卓诗垚
- * @version 2.0
+ * @author 林良益，卓诗垚
+ * @version 2.0 
  * Sep 23, 2008
  */
 public class ExpressionParser {

@@ -17,9 +17,9 @@ import org.wltea.expression.datameta.BaseDataMeta.DataType;
 
 /**
  * 运算符及内嵌方法调用
- * @author 林良益
+ * @author 林良益，卓诗垚
+ * @version 2.0 
  * 2008-09-18
- * @version 2.0
  */
 public class FunctionExecution {
 	

@@ -8,9 +8,9 @@ import java.text.SimpleDateFormat;
 
 /**
  * 表达式上下文变量
- * @author 林良益
+ * @author 林良益，卓诗垚
+ * @version 2.0 
  * 2008-09-23
- * @version 2.0
  */
 public class Variable extends BaseDataMeta{
 
