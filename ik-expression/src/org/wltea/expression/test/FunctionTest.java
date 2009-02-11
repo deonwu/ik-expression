@@ -174,15 +174,5 @@ public class FunctionTest extends TestCase {
 	
 	
 	public static void main(String[] args){
-		//long + float -->float 科学计数法
-		float f = 10.0f + 10000000000l;
-		System.out.println(f);
-		ArrayList<String> expressions = new ArrayList<String>();
-		//算术符
-		expressions.add("-1+2-3*4/5%6");
-		//LE
-		expressions.add("\"12345\" <= \"223\"");
-		expressions.add("12345 <= 223");	
-		System.out.println(expressions);
 	}
 }

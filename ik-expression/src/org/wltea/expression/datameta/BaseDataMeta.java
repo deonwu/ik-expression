@@ -202,7 +202,18 @@ public abstract class BaseDataMeta {
 		}
 		return (List<Object>)dataValue;
 	}
-		
+	
+	/**
+	 * 获取Token的引用对象
+	 * @return
+	 */
+	public Reference getReference() {
+		if(DataType.DATATYPE_REFERENCE != this.dataType){
+			throw new UnsupportedOperationException("当前常量类型不支持此操作");
+		}
+		return (Reference)dataValue;
+	}
+			
 	
 	@Override
 	public boolean equals(Object o){
@@ -296,6 +307,13 @@ public abstract class BaseDataMeta {
 					throw new IllegalArgumentException("数据类型不匹配; 类型：" + dataType + ",值:" + dataValue);
 				}
 				
+			}else if(DataType.DATATYPE_REFERENCE == dataType){
+				try {
+					getReference();
+				} catch (UnsupportedOperationException e) {
+					throw new IllegalArgumentException("数据类型不匹配; 类型：" + dataType + ",值:" + dataValue);
+				}
+
 			}
 		}
 	}	
