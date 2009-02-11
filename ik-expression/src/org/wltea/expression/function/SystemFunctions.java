@@ -115,8 +115,4 @@ public class SystemFunctions {
 		return dayOfDate1.equals(dayOfDate2);
 	}
 
-	public static void main (String[] args){
-		SystemFunctions sf = new SystemFunctions();
-		System.out.println(sf.calcDate(new Date(), 0, 0, -6, 0, 0, 0));
-	}
 }

@@ -3,8 +3,6 @@
  */
 package org.wltea.expression.test;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,23 +90,24 @@ public class FunctionTest extends TestCase {
 			try {
 				System.out.println("expression : " + expression);
 				List<ExpressionToken> list = ee.analyze(expression);			
-				list = ee.convertToRPN(list);		
+				list = ee.compile(list);		
 				
 				String s1 = ee.tokensToString(list);
-				System.out.println("s1 -- " + s1);
+//				System.out.println("s1 -- " + s1);
 				List<ExpressionToken> tokens = ee.stringToTokens(s1);
 				String s2 = ee.tokensToString(tokens);
-				System.out.println("s2 -- " + s2);
-				System.out.println("s1 == s2 ? " + s1.equals(s2));	
-				System.out.println("result = " + ee.executeRPN(tokens).toJavaObject());
+//				System.out.println("s2 -- " + s2);
+				Assert.assertEquals(s1, s2);
+				System.out.println("result = " + ee.execute(tokens).getDataValueText());
 				System.out.println();
 				
 			} catch (IllegalExpressionException e) {
 				e.printStackTrace();
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
+			} 
 		}
+		System.out.println("----------------------------------------------------");		
+		System.out.println("----------------testOperators over------------------");
+		System.out.println("----------------------------------------------------");
 	}
 	
 	/**
@@ -137,6 +136,10 @@ public class FunctionTest extends TestCase {
 		expressions.add("$CALCDATE([2008-01-01],0,0,0,24,0,0)");
 		expressions.add("$CALCDATE([2008-01-01],0,0,31,0,0,0)");
 		expressions.add("$CALCDATE([2008-01-01],0,12,0,0,0,0)");
+		//闰年测试
+		expressions.add("$CALCDATE([2008-03-01],0,0,-1,0,0,0)");
+		expressions.add("$CALCDATE([2008-02-28 23:00:00],0,0,0,1,0,0)");
+		expressions.add("$CALCDATE([2008-02-29 23:00:00],0,0,0,1,0,0)");
 		expressions.add("$CALCDATE($SYSDATE(),-1,12,0,0,0,0)");
 		//$SYSDATE
 		expressions.add("$SYSDATE()");
@@ -149,30 +152,24 @@ public class FunctionTest extends TestCase {
 			try {
 				System.out.println("expression : " + expression);
 				List<ExpressionToken> list = ee.analyze(expression);			
-				list = ee.convertToRPN(list);		
+				list = ee.compile(list);		
 				
 				String s1 = ee.tokensToString(list);
-				System.out.println("s1 -- " + s1);
+				//System.out.println("s1 -- " + s1);
 				List<ExpressionToken> tokens = ee.stringToTokens(s1);
 				String s2 = ee.tokensToString(tokens);
-				System.out.println("s2 -- " + s2);
-				System.out.println("s1 == s2 ? " + s1.equals(s2));	
+				//System.out.println("s2 -- " + s2);
 				Assert.assertEquals(s1, s2);
-				Object o = ee.executeRPN(tokens).toJavaObject();
-				if (o instanceof java.util.Date) {
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-					System.out.println("result = " + sdf.format(o));
-				} else {
-					System.out.println("result = " + o);
-				}
+				System.out.println("result = " + ee.execute(tokens).getDataValueText());
 				System.out.println();
 				
 			} catch (IllegalExpressionException e) {
 				e.printStackTrace();
-			} catch (ParseException e) {
-				e.printStackTrace();
 			}
 		}
+		System.out.println("----------------------------------------------------");		
+		System.out.println("--------------testInnerFunctions over---------------");
+		System.out.println("----------------------------------------------------");		
 	}
 	
 	
@@ -180,5 +177,12 @@ public class FunctionTest extends TestCase {
 		//long + float -->float 科学计数法
 		float f = 10.0f + 10000000000l;
 		System.out.println(f);
+		ArrayList<String> expressions = new ArrayList<String>();
+		//算术符
+		expressions.add("-1+2-3*4/5%6");
+		//LE
+		expressions.add("\"12345\" <= \"223\"");
+		expressions.add("12345 <= 223");	
+		System.out.println(expressions);
 	}
 }

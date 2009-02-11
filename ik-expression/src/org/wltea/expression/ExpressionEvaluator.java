@@ -40,9 +40,9 @@ public class ExpressionEvaluator {
 			//解析表达式词元
 			List<ExpressionToken> expTokens = ee.analyze(expression);
 			//转化RPN，并验证
-			expTokens = ee.convertToRPN(expTokens);
+			expTokens = ee.compile(expTokens);
 			//执行RPN
-			Constant constant = ee.executeRPN(expTokens);	
+			Constant constant = ee.execute(expTokens);	
 			return constant.toJavaObject();
 
 		} catch (IllegalExpressionException e) {
@@ -69,9 +69,7 @@ public class ExpressionEvaluator {
 		}
 		ExpressionExecutor ee = new ExpressionExecutor();
 		List<ExpressionToken> list = ee.analyze(expression);
-		list = ee.convertToRPN(list);
+		list = ee.compile(list);
 		return ee.tokensToString(list);
 	}
-	
-
 }

@@ -24,7 +24,7 @@ public class ExpressionExecutor20090201 extends ExpressionExecutor {
 
 	private int inShortCutStatus = 0;	
 	
-	public List<ExpressionToken> convertToRPN(List<ExpressionToken> expTokens)throws IllegalExpressionException{
+	public List<ExpressionToken> compile(List<ExpressionToken> expTokens)throws IllegalExpressionException{
 		
 		if(expTokens == null || expTokens.isEmpty()){
 			throw new IllegalArgumentException("无法转化空的表达式");
@@ -337,7 +337,7 @@ public class ExpressionExecutor20090201 extends ExpressionExecutor {
 		return _RPNExpList;
 	}	
 	
-	public Constant executeRPN(List<ExpressionToken> _RPNExpList) throws IllegalExpressionException{
+	public Constant execute(List<ExpressionToken> _RPNExpList) throws IllegalExpressionException{
 		if(_RPNExpList == null || _RPNExpList.isEmpty()){
 			throw new IllegalArgumentException("无法执行空的逆波兰式队列");
 		}
@@ -606,7 +606,7 @@ public class ExpressionExecutor20090201 extends ExpressionExecutor {
 		//String example = "100<10 && (333<3333 || 5555> 666) || false";
 		try {
 			List<ExpressionToken> list = ee.analyze(example);			
-			list = ee.convertToRPN(list);			
+			list = ee.compile(list);			
 			
 			String s1 = ee.tokensToString(list);
 			System.out.println("s1 -- " + s1);
@@ -615,7 +615,7 @@ public class ExpressionExecutor20090201 extends ExpressionExecutor {
 			System.out.println("s2 -- " + s2);
 			System.out.println("s1 == s2 ? " + s1.equals(s2));
 
-			System.out.println(ee.executeRPN(tokens));
+			System.out.println(ee.execute(tokens));
 			
 			String i = 100>10 ?  200<20 ?  "path0" : "path1" : 100>10 ? "path2" : "path3";
 			System.out.println(i);

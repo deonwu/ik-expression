@@ -56,13 +56,7 @@ public class ExpressionExecutor {
 	 * @param expTokens
 	 * @return
 	 */
-	/**
-	 * 将正常表达式词元序列，转换成逆波兰式序列
-	 * 同时检查表达式语法
-	 * @param expTokens
-	 * @return
-	 */
-	public List<ExpressionToken> convertToRPN(List<ExpressionToken> expTokens)throws IllegalExpressionException{
+	public List<ExpressionToken> compile(List<ExpressionToken> expTokens)throws IllegalExpressionException{
 		
 		if(expTokens == null || expTokens.isEmpty()){
 			throw new IllegalArgumentException("无法转化空的表达式");
@@ -407,7 +401,7 @@ public class ExpressionExecutor {
 	 * 执行逆波兰式
 	 * @return
 	 */
-	public Constant executeRPN(List<ExpressionToken> _RPNExpList) throws IllegalExpressionException{
+	public Constant execute(List<ExpressionToken> _RPNExpList) throws IllegalExpressionException{
 		if(_RPNExpList == null || _RPNExpList.isEmpty()){
 			throw new IllegalArgumentException("无法执行空的逆波兰式队列");
 		}

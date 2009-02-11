@@ -3,6 +3,7 @@
  */
 package org.wltea.expression.incoding;
 
+import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.wltea.expression.datameta.Reference;
 import org.wltea.expression.datameta.Variable;
 import org.wltea.expression.datameta.VariableContainer;
 import org.wltea.expression.datameta.BaseDataMeta.DataType;
+import org.wltea.expression.function.SystemFunctions;
 import org.wltea.expression.op.Operator;
 
 /**
@@ -31,7 +33,7 @@ public class ExpressionExecutor20090207 extends ExpressionExecutor {
 	 * @param expTokens
 	 * @return
 	 */
-	public List<ExpressionToken> convertToRPN(List<ExpressionToken> expTokens)throws IllegalExpressionException{
+	public List<ExpressionToken> compile(List<ExpressionToken> expTokens)throws IllegalExpressionException{
 		
 		if(expTokens == null || expTokens.isEmpty()){
 			throw new IllegalArgumentException("无法转化空的表达式");
@@ -375,7 +377,7 @@ public class ExpressionExecutor20090207 extends ExpressionExecutor {
 	 * 执行逆波兰式
 	 * @return
 	 */
-	public Constant executeRPN(List<ExpressionToken> _RPNExpList) throws IllegalExpressionException{
+	public Constant execute(List<ExpressionToken> _RPNExpList) throws IllegalExpressionException{
 		if(_RPNExpList == null || _RPNExpList.isEmpty()){
 			throw new IllegalArgumentException("无法执行空的逆波兰式队列");
 		}
@@ -561,7 +563,7 @@ public class ExpressionExecutor20090207 extends ExpressionExecutor {
 			ExpressionExecutor ee = new ExpressionExecutor();
 			try {
 				List<ExpressionToken> list = ee.analyze(example);			
-				list = ee.convertToRPN(list);			
+				list = ee.compile(list);			
 				
 				String s1 = ee.tokensToString(list);
 				System.out.println("s1 -- " + s1);
@@ -570,7 +572,7 @@ public class ExpressionExecutor20090207 extends ExpressionExecutor {
 				System.out.println("s2 -- " + s2);
 				System.out.println("s1 == s2 ? " + s1.equals(s2));
 
-				System.out.println(ee.executeRPN(tokens).toJavaObject());
+				System.out.println(ee.execute(tokens).toJavaObject());
 				
 			} catch (IllegalExpressionException e) {
 
@@ -579,5 +581,5 @@ public class ExpressionExecutor20090207 extends ExpressionExecutor {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}	
+		}
 }

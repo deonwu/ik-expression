@@ -76,17 +76,20 @@ public abstract class BaseDataMeta {
 			return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format((Date)dataValue);
 			
 		}else if(BaseDataMeta.DataType.DATATYPE_COLLECTION == this.dataType){
-			StringBuffer buff = new StringBuffer("#");			
-			List<Object> col = (List<Object>)dataValue;
+			StringBuffer buff = new StringBuffer("[");			
+			List col = (List)dataValue;
 			for(Object o : col){
 				if (o == null) {
-					continue;
-				}
-				if(o instanceof Date){
-					buff.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format((Date)o)).append("#");
+					buff.append("null, ");
+				}else if(o instanceof Date){
+					buff.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format((Date)o)).append(", ");
 				}else{
-					buff.append(o.toString()).append("#");
+					buff.append(o.toString()).append(", ");
 				}
+			}
+			buff.append("]");
+			if(buff.length() > 2){
+				buff.delete(buff.length()-3, buff.length()-1);
 			}
 			return buff.toString();
 
