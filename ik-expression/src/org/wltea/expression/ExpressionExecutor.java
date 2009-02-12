@@ -704,7 +704,7 @@ public class ExpressionExecutor {
 	 * @param tokens
 	 * @throws IllegalExpressionException 
 	 */
-	protected void addToken(String tokenString , List<ExpressionToken> tokens) throws IllegalExpressionException{
+	private void addToken(String tokenString , List<ExpressionToken> tokens) throws IllegalExpressionException{
 		
 		ExpressionToken token = null;
 		//null
@@ -792,7 +792,7 @@ public class ExpressionExecutor {
 	 * @param verifyStack
 	 * @return
 	 */
-	protected ExpressionToken verifyOperator(ExpressionToken opToken , Stack<ExpressionToken> verifyStack)throws IllegalExpressionException{
+	private ExpressionToken verifyOperator(ExpressionToken opToken , Stack<ExpressionToken> verifyStack)throws IllegalExpressionException{
 		//判定几元操作符
 		Operator op = opToken.getOperator();
 		int opType = op.getOpType();
@@ -845,7 +845,7 @@ public class ExpressionExecutor {
 	 * @param verifyStack
 	 * @return
 	 */
-	protected ExpressionToken verifyFunction(ExpressionToken funtionToken , Stack<ExpressionToken> verifyStack)throws IllegalExpressionException{
+	private ExpressionToken verifyFunction(ExpressionToken funtionToken , Stack<ExpressionToken> verifyStack)throws IllegalExpressionException{
 		
 		if(!verifyStack.empty()){
 

@@ -88,8 +88,9 @@ public class FunctionExecution {
 			}else if(result instanceof List){
 				return  new Constant(BaseDataMeta.DataType.DATATYPE_COLLECTION , result);
 				
-			}else{
-				throw new IllegalStateException("解析器运行时内部错误：不支持的函数返回类型");
+			}else {
+				return new Constant(BaseDataMeta.DataType.DATATYPE_OBJECT , result);	
+				
 			}
 		} catch (NoSuchMethodException e) {
 			//抛异常
@@ -152,6 +153,9 @@ public class FunctionExecution {
 				
 			}else if(List.class == returnType){
 				return new Constant(BaseDataMeta.DataType.DATATYPE_COLLECTION , null);	
+				
+			}else if(Object.class == returnType){
+				return new Constant(BaseDataMeta.DataType.DATATYPE_OBJECT , null);	
 				
 			}else{
 				throw new IllegalStateException("解析器内部错误：不支持的函数返回类型");

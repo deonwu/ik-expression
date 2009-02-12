@@ -38,7 +38,9 @@ public abstract class BaseDataMeta {
 		//集合对象
 		DATATYPE_COLLECTION,
 		//引用
-		DATATYPE_REFERENCE,		
+		DATATYPE_REFERENCE,
+		//通用对象类型
+		DATATYPE_OBJECT,
 		;
 
 	}
@@ -314,6 +316,13 @@ public abstract class BaseDataMeta {
 					throw new IllegalArgumentException("数据类型不匹配; 类型：" + dataType + ",值:" + dataValue);
 				}
 
+			}else if(DataType.DATATYPE_OBJECT == dataType){
+				try {
+					getDataValue();
+				} catch (UnsupportedOperationException e) {
+					throw new IllegalArgumentException("数据类型不匹配; 类型：" + dataType + ",值:" + dataValue);
+				}
+
 			}
 		}
 	}	
@@ -343,6 +352,9 @@ public abstract class BaseDataMeta {
 			
 		}else if(BaseDataMeta.DataType.DATATYPE_COLLECTION == this.getDataType()){
 			return List.class;
+			
+		}else if(BaseDataMeta.DataType.DATATYPE_OBJECT == this.getDataType()){
+			return Object.class;
 		}
 		throw new RuntimeException("映射Java类型失败：无法识别的数据类型");
 	}
@@ -380,6 +392,9 @@ public abstract class BaseDataMeta {
 		}else if(BaseDataMeta.DataType.DATATYPE_COLLECTION == this.getDataType()){			
 			return getCollection();
 			
+		}else if(BaseDataMeta.DataType.DATATYPE_OBJECT == this.getDataType()){			
+			return getDataValue();
+
 		}else {
 			throw new RuntimeException("映射Java类型失败：无法识别的数据类型");
 		}	
