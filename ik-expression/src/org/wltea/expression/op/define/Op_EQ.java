@@ -136,7 +136,19 @@ public class Op_EQ implements IOperatorExecution {
 				}else{
 					return new Constant(BaseDataMeta.DataType.DATATYPE_BOOLEAN , Boolean.FALSE);
 				}
-				
+	
+			}else if(BaseDataMeta.DataType.DATATYPE_OBJECT == first.getDataType()
+						&& BaseDataMeta.DataType.DATATYPE_OBJECT == second.getDataType()){
+				Object firstValue = first.getDataValue();
+				Object secondValue = second.getDataValue();
+				if(firstValue != null){
+					return new Constant(BaseDataMeta.DataType.DATATYPE_BOOLEAN , firstValue.equals(secondValue));
+				}else if(secondValue == null){
+					return new Constant(BaseDataMeta.DataType.DATATYPE_BOOLEAN , Boolean.TRUE);					
+				}else{
+					return new Constant(BaseDataMeta.DataType.DATATYPE_BOOLEAN , Boolean.FALSE);
+				}
+
 			}else{
 				//如果操作数没有NULL型，且类型不同，抛异常（如果有校验，校验时就应该抛异常）
 				throw new IllegalArgumentException("操作符\"" + THIS_OPERATOR.getToken() + "\"参数类型错误");

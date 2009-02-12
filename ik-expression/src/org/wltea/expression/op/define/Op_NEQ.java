@@ -135,6 +135,18 @@ public class Op_NEQ implements IOperatorExecution {
 				}else{
 					return new Constant(BaseDataMeta.DataType.DATATYPE_BOOLEAN , Boolean.TRUE);
 				}
+		
+			}else if(BaseDataMeta.DataType.DATATYPE_OBJECT == first.getDataType()
+					&& BaseDataMeta.DataType.DATATYPE_OBJECT == second.getDataType()){
+				Object firstValue = first.getDataValue();
+				Object secondValue = second.getDataValue();
+				if(firstValue != null){
+					return new Constant(BaseDataMeta.DataType.DATATYPE_BOOLEAN , !firstValue.equals(secondValue));
+				}else if(secondValue == null){
+					return new Constant(BaseDataMeta.DataType.DATATYPE_BOOLEAN , Boolean.FALSE);					
+				}else{
+					return new Constant(BaseDataMeta.DataType.DATATYPE_BOOLEAN , Boolean.TRUE);
+				}
 				
 			}else{
 				//如果操作数没有NULL型，且类型不同，抛异常（如果有校验，校验时就应该抛异常）
