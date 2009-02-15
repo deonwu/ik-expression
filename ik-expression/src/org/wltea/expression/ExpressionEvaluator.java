@@ -66,20 +66,4 @@ public class ExpressionEvaluator {
 			VariableContainer.removeVariableMap();
 		}
 	}
-	
-	/**
-	 * 将原始的表达式编译为RPN字符窜
-	 * 如果表达式中有变量，调用此方法前要为之设置变量类型
-	 * @param expression
-	 * @return
-	 */
-	public static String compileExpression(String expression) throws IllegalExpressionException {
-		if (expression == null || expression.trim().equals("")) {
-			return null;
-		}
-		ExpressionExecutor ee = new ExpressionExecutor();
-		List<ExpressionToken> list = ee.analyze(expression);
-		list = ee.compile(list);
-		return ee.tokensToString(list);
-	}
 }

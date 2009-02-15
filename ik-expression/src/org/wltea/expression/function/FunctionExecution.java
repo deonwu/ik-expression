@@ -86,7 +86,7 @@ public class FunctionExecution {
 				return new Constant(BaseDataMeta.DataType.DATATYPE_STRING , result);
 							
 			}else if(result instanceof List){
-				return  new Constant(BaseDataMeta.DataType.DATATYPE_COLLECTION , result);
+				return  new Constant(BaseDataMeta.DataType.DATATYPE_LIST , result);
 				
 			}else {
 				return new Constant(BaseDataMeta.DataType.DATATYPE_OBJECT , result);	
@@ -152,7 +152,7 @@ public class FunctionExecution {
 				return new Constant(BaseDataMeta.DataType.DATATYPE_STRING , null);	
 				
 			}else if(List.class == returnType){
-				return new Constant(BaseDataMeta.DataType.DATATYPE_COLLECTION , null);	
+				return new Constant(BaseDataMeta.DataType.DATATYPE_LIST , null);	
 				
 			}else if(Object.class == returnType){
 				return new Constant(BaseDataMeta.DataType.DATATYPE_OBJECT , null);	

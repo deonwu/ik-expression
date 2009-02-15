@@ -50,8 +50,8 @@ public class Op_EQ implements IOperatorExecution {
 		
 		
 		//集合类型EQ运算单独处理
-		if(BaseDataMeta.DataType.DATATYPE_COLLECTION ==  first.getDataType()
-				|| BaseDataMeta.DataType.DATATYPE_COLLECTION ==  second.getDataType()){
+		if(BaseDataMeta.DataType.DATATYPE_LIST ==  first.getDataType()
+				|| BaseDataMeta.DataType.DATATYPE_LIST ==  second.getDataType()){
 			//目前不支持集合EQ比较，（太麻烦鸟）.考虑使用后期使用函数实现
 			throw new IllegalArgumentException("操作符\"" + THIS_OPERATOR.getToken() + "\"参数类型错误");
 
@@ -180,8 +180,8 @@ public class Op_EQ implements IOperatorExecution {
 		}		
 		
 		//集合类型EQ运算单独处理
-		if(BaseDataMeta.DataType.DATATYPE_COLLECTION ==  first.getDataType()
-				|| BaseDataMeta.DataType.DATATYPE_COLLECTION ==  second.getDataType()){
+		if(BaseDataMeta.DataType.DATATYPE_LIST ==  first.getDataType()
+				|| BaseDataMeta.DataType.DATATYPE_LIST ==  second.getDataType()){
 			//目前不支持集合EQ比较，（太麻烦鸟）.考虑使用后期使用函数实现
 			throw new IllegalExpressionException("操作符\"" + THIS_OPERATOR.getToken() + "\"参数类型错误"
 					, THIS_OPERATOR.getToken()

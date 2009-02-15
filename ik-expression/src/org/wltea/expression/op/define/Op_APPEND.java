@@ -74,7 +74,7 @@ public class Op_APPEND implements IOperatorExecution {
 			throw new NullPointerException("操作符\"" + THIS_OPERATOR.getToken() + "\"参数为空");
 		}		
 		//APPEND接受任何类型的参数，总是返回Collection类型的常量
-		return new Constant(BaseDataMeta.DataType.DATATYPE_COLLECTION , null);
+		return new Constant(BaseDataMeta.DataType.DATATYPE_LIST , null);
 				
 	}
 	
@@ -89,7 +89,7 @@ public class Op_APPEND implements IOperatorExecution {
 	
 		List<Object> resultCollection = new ArrayList<Object>();
 		//合并参数一
-		if(DataType.DATATYPE_COLLECTION == arg1.getDataType()){
+		if(DataType.DATATYPE_LIST == arg1.getDataType()){
 			if(arg1.getCollection() != null){
 				resultCollection.addAll(arg1.getCollection());
 			}
@@ -103,7 +103,7 @@ public class Op_APPEND implements IOperatorExecution {
 			}
 		}
 		//合并参数二
-		if(DataType.DATATYPE_COLLECTION == arg2.getDataType()){
+		if(DataType.DATATYPE_LIST == arg2.getDataType()){
 			if(arg2.getCollection() != null){
 				resultCollection.addAll(arg2.getCollection());
 			}
@@ -118,7 +118,7 @@ public class Op_APPEND implements IOperatorExecution {
 		}
 		
 		//构造新的collection 常量
-		Constant result = new Constant(BaseDataMeta.DataType.DATATYPE_COLLECTION , resultCollection);
+		Constant result = new Constant(BaseDataMeta.DataType.DATATYPE_LIST , resultCollection);
 		return result;
 	}	
 

@@ -2,6 +2,7 @@ package org.wltea.expression.test;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.wltea.expression.ExpressionEvaluator;
 import org.wltea.expression.datameta.Variable;
@@ -10,7 +11,12 @@ import junit.framework.TestCase;
 
 public class VariableTest extends TestCase {
 
+	/**
+	 * 简单测试带变量的表达式操作符
+	 * @throws Exception
+	 */
 	public void testOperators()  throws Exception {
+		System.out.println("testOperators");
 
 		ArrayList<String> expressions = new ArrayList<String>();
 		//算术符
@@ -64,4 +70,71 @@ public class VariableTest extends TestCase {
 		System.out.println("----------------------------------------------------");
 		
 	}
+	
+	/**
+	 * 测试带变量的内部函数
+	 * @throws Exception
+	 */
+	public void testInnerFunctions() throws Exception {
+		System.out.println("testInnerFunctions");
+		
+		List<String> expressions = new ArrayList<String>();
+		//$CONTAINS
+		expressions.add("$CONTAINS(vString1 ,\"abc\")");
+		expressions.add("$CONTAINS(vString2 ,\"abc\")");
+		//$STARTSWITH
+		expressions.add("$STARTSWITH(vString2 ,\"abc\")");
+		expressions.add("$STARTSWITH(vString3 ,\"abc\")");
+		//$ENDSWITH
+		expressions.add("$ENDSWITH(vString2 ,\"abc\")");
+		expressions.add("$ENDSWITH(vString3 ,\"bcc\")");
+		//$CALCDATE
+		expressions.add("$CALCDATE(vDate,1,1,1,1,1,1)");
+		expressions.add("$CALCDATE(vDate,0,0,0,0,0,0)");
+		expressions.add("$CALCDATE(vDate,-1,-1,-1,-1,-1,-1)");
+		expressions.add("$CALCDATE(vDate,0,0,0,0,0,60)");
+		expressions.add("$CALCDATE(vDate,0,0,0,0,60,0)");
+		expressions.add("$CALCDATE(vDate,0,0,0,24,0,0)");
+		expressions.add("$CALCDATE(vDate,0,0,31,0,0,0)");
+		expressions.add("$CALCDATE(vDate,0,12,0,0,0,0)");
+		//$DAYEQUALS
+		expressions.add("$DAYEQUALS(vDate,[2008-01-01])");
+		
+		//设置上下文变量
+		List<Variable> variables = new ArrayList<Variable>();		
+		variables.add(Variable.createVariable("vString1", "aabbcc"));
+		variables.add(Variable.createVariable("vString2", "aabcbcc"));
+		variables.add(Variable.createVariable("vString3", "abccbcc"));
+		variables.add(Variable.createVariable("vDate", new Date()));
+		
+		
+		for(String expression : expressions){
+			System.out.println("expression : " + expression);
+			Object result = ExpressionEvaluator.evaluate(expression, variables);
+			System.out.println("result = " + result);
+			System.out.println();
+		}
+		System.out.println("----------------------------------------------------");		
+		System.out.println("--------------testInnerFunctions over---------------");
+		System.out.println("----------------------------------------------------");		
+	}
+	
+	/**
+	 * Hello World Example
+	 * @param args
+	 */
+	public static void main(String[] args){
+		if(args.length == 0){
+			args = new String[1];
+			args[0] = "IK Expression";
+		}
+		//定义表达式
+		String expression = "\"Hello World \" + 用户名";
+		//给表达式中的变量userName付上下文的值
+		List<Variable> variables = new ArrayList<Variable>();
+		variables.add(Variable.createVariable("用户名", args[0]));
+		//执行表达式
+		Object result = ExpressionEvaluator.evaluate(expression, variables);
+		System.out.println("Result = " + result);		
+	}	
 }

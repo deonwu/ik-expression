@@ -59,8 +59,8 @@ public class Op_DIV implements IOperatorExecution {
 				|| BaseDataMeta.DataType.DATATYPE_DATE ==  second.getDataType()
 				|| BaseDataMeta.DataType.DATATYPE_STRING ==  first.getDataType()
 				|| BaseDataMeta.DataType.DATATYPE_STRING ==  second.getDataType()
-				|| BaseDataMeta.DataType.DATATYPE_COLLECTION ==  first.getDataType()
-				|| BaseDataMeta.DataType.DATATYPE_COLLECTION ==  second.getDataType()
+				|| BaseDataMeta.DataType.DATATYPE_LIST ==  first.getDataType()
+				|| BaseDataMeta.DataType.DATATYPE_LIST ==  second.getDataType()
 			){
 			//抛异常
 			throw new IllegalArgumentException("操作符\"" + THIS_OPERATOR.getToken() + "\"参数类型错误"	);
@@ -126,8 +126,8 @@ public class Op_DIV implements IOperatorExecution {
 				|| BaseDataMeta.DataType.DATATYPE_DATE ==  second.getDataType()
 				|| BaseDataMeta.DataType.DATATYPE_STRING ==  first.getDataType()
 				|| BaseDataMeta.DataType.DATATYPE_STRING ==  second.getDataType()
-				|| BaseDataMeta.DataType.DATATYPE_COLLECTION ==  first.getDataType()
-				|| BaseDataMeta.DataType.DATATYPE_COLLECTION ==  second.getDataType()
+				|| BaseDataMeta.DataType.DATATYPE_LIST ==  first.getDataType()
+				|| BaseDataMeta.DataType.DATATYPE_LIST ==  second.getDataType()
 			){
 			//抛异常
 			throw new IllegalExpressionException("操作符\"" + THIS_OPERATOR.getToken() + "\"参数类型错误"

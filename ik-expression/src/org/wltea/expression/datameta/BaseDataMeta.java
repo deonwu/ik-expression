@@ -36,7 +36,7 @@ public abstract class BaseDataMeta {
 		//日期时间
 		DATATYPE_DATE ,
 		//集合对象
-		DATATYPE_COLLECTION,
+		DATATYPE_LIST,
 		//引用
 		DATATYPE_REFERENCE,
 		//通用对象类型
@@ -77,7 +77,7 @@ public abstract class BaseDataMeta {
 		}else if(DataType.DATATYPE_DATE ==  this.dataType){
 			return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format((Date)dataValue);
 			
-		}else if(BaseDataMeta.DataType.DATATYPE_COLLECTION == this.dataType){
+		}else if(BaseDataMeta.DataType.DATATYPE_LIST == this.dataType){
 			StringBuffer buff = new StringBuffer("[");			
 			List col = (List)dataValue;
 			for(Object o : col){
@@ -199,7 +199,7 @@ public abstract class BaseDataMeta {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Object> getCollection() {
-		if(DataType.DATATYPE_COLLECTION != this.dataType){
+		if(DataType.DATATYPE_LIST != this.dataType){
 			throw new UnsupportedOperationException("当前常量类型不支持此操作");
 		}
 		return (List<Object>)dataValue;
@@ -302,7 +302,7 @@ public abstract class BaseDataMeta {
 					throw new IllegalArgumentException("数据类型不匹配; 类型：" + dataType + ",值:" + dataValue);
 				}
 				
-			}else if(DataType.DATATYPE_COLLECTION == dataType){
+			}else if(DataType.DATATYPE_LIST == dataType){
 				try {
 					getCollection();
 				} catch (UnsupportedOperationException e) {
@@ -350,7 +350,7 @@ public abstract class BaseDataMeta {
 		}else if(BaseDataMeta.DataType.DATATYPE_STRING == this.getDataType()){
 			return String.class;
 			
-		}else if(BaseDataMeta.DataType.DATATYPE_COLLECTION == this.getDataType()){
+		}else if(BaseDataMeta.DataType.DATATYPE_LIST == this.getDataType()){
 			return List.class;
 			
 		}else if(BaseDataMeta.DataType.DATATYPE_OBJECT == this.getDataType()){
@@ -389,7 +389,7 @@ public abstract class BaseDataMeta {
 		}else if(BaseDataMeta.DataType.DATATYPE_STRING == this.getDataType()){
 			return getStringValue();
 			
-		}else if(BaseDataMeta.DataType.DATATYPE_COLLECTION == this.getDataType()){			
+		}else if(BaseDataMeta.DataType.DATATYPE_LIST == this.getDataType()){			
 			return getCollection();
 			
 		}else if(BaseDataMeta.DataType.DATATYPE_OBJECT == this.getDataType()){			

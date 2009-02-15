@@ -17,6 +17,12 @@ public class Variable extends BaseDataMeta{
 	//变量名
 	String variableName;
 	
+	/**
+	 * 根据别名和参数值，构造 Variable 实例
+	 * @param variableName
+	 * @param variableValue
+	 * @return Variable
+	 */
 	public static Variable createVariable(String variableName , Object variableValue){
 
 		if(variableValue instanceof Boolean){
@@ -41,7 +47,7 @@ public class Variable extends BaseDataMeta{
 			return new Variable(variableName , DataType.DATATYPE_STRING , variableValue);
 						
 		}else if(variableValue instanceof List){
-			return new Variable(variableName , DataType.DATATYPE_COLLECTION , variableValue);
+			return new Variable(variableName , DataType.DATATYPE_LIST , variableValue);
 			
 		}else if(variableValue instanceof Object){
 			return new Variable(variableName , DataType.DATATYPE_OBJECT , variableValue);

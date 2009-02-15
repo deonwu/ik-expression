@@ -20,7 +20,7 @@ public class Constant extends BaseDataMeta {
 			throw new IllegalArgumentException("非法参数：数据类型为空");
 		}
 		//如果为集合类型，生成集合容器
-		if(DataType.DATATYPE_COLLECTION == dataType){
+		if(DataType.DATATYPE_LIST == dataType){
 			if(dataValue == null){
 				dataValue = new ArrayList<Object>(0);
 			}
