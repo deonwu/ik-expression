@@ -3,6 +3,9 @@
  */
 package org.wltea.expression.datameta;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * 表达式上下文变量
  * @author 林良益，卓诗垚
@@ -13,34 +16,61 @@ public class Variable extends BaseDataMeta{
 
 	//变量名
 	String variableName;
-
-	//变量显示名
-	String variableDisplayName;
 	
+	public static Variable createVariable(String variableName , Object variableValue){
+
+		if(variableValue instanceof Boolean){
+			return new Variable(variableName , DataType.DATATYPE_BOOLEAN , variableValue);
+
+		}else if(variableValue instanceof Date){
+			return new Variable(variableName , DataType.DATATYPE_DATE , variableValue);
+
+		}else if(variableValue instanceof Double){
+			return new Variable(variableName , DataType.DATATYPE_DOUBLE , variableValue);
+						
+		}else if(variableValue instanceof Float){
+			return new Variable(variableName , DataType.DATATYPE_FLOAT , variableValue);
+						
+		}else if(variableValue instanceof Integer){
+			return new Variable(variableName , DataType.DATATYPE_INT , variableValue);
+						
+		}else if(variableValue instanceof Long){
+			return new Variable(variableName , DataType.DATATYPE_LONG , variableValue);
+						
+		}else if(variableValue instanceof String){
+			return new Variable(variableName , DataType.DATATYPE_STRING , variableValue);
+						
+		}else if(variableValue instanceof List){
+			return new Variable(variableName , DataType.DATATYPE_COLLECTION , variableValue);
+			
+		}else if(variableValue instanceof Object){
+			return new Variable(variableName , DataType.DATATYPE_OBJECT , variableValue);
+			
+		}else if(variableValue == null){
+			return new Variable(variableName , DataType.DATATYPE_NULL , variableValue);
+			
+		}else {
+			throw new IllegalArgumentException("非法参数：无法识别的变量类型");
+		}
+
+	}	
 
 	public Variable(String variableName){
-		this(variableName , null , null , variableName);	
+		this(variableName , null , null);	
 	}
 	
 	public Variable(String variableName , DataType variableDataType , Object variableValue){
-		this(variableName , variableDataType , variableValue , variableName);		
-	}
-	
-	public Variable(String variableName , DataType variableDataType , Object variableValue  , String variableDisplayName){
 		super(variableDataType , variableValue);
 
 		if(variableName == null){
 			throw new IllegalArgumentException("非法参数：变量名为空");
 		}
-		if(DataType.DATATYPE_NULL == variableDataType){
-			throw new IllegalArgumentException("非法参数：变量类型不能为DATATYPE_NULL,该类型不对外开放");
-		}
+
 		if(DataType.DATATYPE_REFERENCE == variableDataType){
 			throw new IllegalArgumentException("非法参数：变量类型不能为DATATYPE_REFERENCE,该类型不对外开放");
 		}
 		
 		this.variableName = variableName ;
-		this.variableDisplayName = variableDisplayName;
 	}
 
 	public String getVariableName() {
@@ -52,14 +82,6 @@ public class Variable extends BaseDataMeta{
 		this.dataValue = variableValue;
 		//参数类型校验
 		verifyDataMeta();
-	}
-	
-	public String getVariableDisplayName() {
-		return variableDisplayName;
-	}
-
-	public void setVariableDisplayName(String variableDisplayName) {
-		this.variableDisplayName = variableDisplayName;
 	}
 	
 	public void setDataType(DataType dataType){

@@ -18,15 +18,8 @@ import junit.framework.TestCase;
  * @author 林良益
  *
  */
-public class FunctionTest extends TestCase {
-	/**
-	 * 测试ExpressionEvaluator
-	 * @throws Exception
-	 */
-	public void testEvaluator() throws Exception {
-		System.out.println("testEvaluator");
-	}
-	
+public class FunctionalityTest extends TestCase {
+
 	/**
 	 * 简单测试表达式中的各个操作符
 	 * @throws Exception
@@ -174,5 +167,6 @@ public class FunctionTest extends TestCase {
 	
 	
 	public static void main(String[] args){
+		System.out.println(null instanceof Object);
 	}
 }

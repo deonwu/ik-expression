@@ -17,6 +17,16 @@ import org.wltea.expression.datameta.VariableContainer;
  * Sep 25, 2008
  */
 public class ExpressionEvaluator {
+	
+	/**
+	 * 执行无变量表达式
+	 * @param expression
+	 * @return
+	 */
+	public static Object evaluate(String expression){
+		return evaluate(expression , null);
+	}
+	
 	/**
 	 * 根据流程上下文，执行公式语言
 	 * @param expression
