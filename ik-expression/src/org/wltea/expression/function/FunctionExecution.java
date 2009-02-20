@@ -121,16 +121,16 @@ public class FunctionExecution {
 		//通过方法名和参数数组，获取方法，及方法的返回值，并转化成ExpressionToken
 		try {
 			Method funtion = FunctionLoader.loadFunction(functionName);
-
 			//校验方法参数类型
 			Class<?>[] parametersType = funtion.getParameterTypes();
 			if(args.length == parametersType.length){
-				for(int i = 0 ; i < args.length ; i++){
+				//注意，传入参数的顺序是颠倒的
+				for(int i = args.length - 1 ; i >= 0  ; i--){
 					Class<?> javaType = args[i].mapTypeToJavaClass();
 					if(javaType != null){
-						if(javaType != parametersType[i]){
+						if(javaType != parametersType[parametersType.length - i - 1]){
 							//抛异常
-							throw new IllegalExpressionException("函数\"" + functionName + "\"参数类型不匹配"
+							throw new IllegalExpressionException("函数\"" + functionName + "\"参数类型不匹配,函数类型为：" + parametersType[i].getName() + " 传入参数类型为：" + javaType.getName() 
 									, functionName
 									, position
 									);
