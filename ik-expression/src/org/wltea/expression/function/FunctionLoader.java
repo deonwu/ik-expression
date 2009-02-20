@@ -3,11 +3,19 @@
  */
 package org.wltea.expression.function;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Properties;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 
 /**
@@ -19,150 +27,301 @@ import java.util.Properties;
  */
 @SuppressWarnings("unchecked")
 public class FunctionLoader {
+	private static final String FILE_NAME = "/functionConfig.xml";
 	
 	private static FunctionLoader single = new FunctionLoader();
 	
 	//所有方法Map
-	private HashMap<String, Function> functionMap = new HashMap<String, Function>();
-	
-	static {
-		Properties prop = new Properties();
-		try {
-			//从属性文件中加载配置信息
-			prop.load(FunctionLoader.class.getResourceAsStream("/functionConfig.properties"));
-			for (Iterator it = prop.keySet().iterator(); it.hasNext(); ) {
-				String key = (String)it.next();
-				String value = prop.getProperty(key);
-				if (value == null) {
-					continue;
-				}
-				String[] tem = value.trim().split("@");
-				if (tem.length != 2) {
-					continue;
-				}
-				single.functionMap.put(key.trim(), single.new Function(Class.forName(tem[0]), tem[1]));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-    }
+	private HashMap<String, FunctionInvoker> functionMap = new HashMap<String, FunctionInvoker>();
 	
 	/**
 	 * 私有，禁止外部新建
 	 */
 	private FunctionLoader() {
-		
-	}
-
-	/**
-	 * 表达式可用函数除了从配置文件“functionConfig.properties”加载外，
-	 * 还可以通过此方法运行时添加
-	 * @param functionName 方法别名，表达式使用的名称
-	 * @param instance 调用的实例名
-	 * @param methodName 调用的方支渠名
-	 */
-	public static void addFunction(String functionName, Object instance, String methodName) {
-		if (functionName == null || instance == null || methodName == null) {
-			return;
-		}
-		single.functionMap.put(functionName, single.new Function(instance, methodName));
+		init();
 	}
 	
 	/**
-	 * 跟据名称与参数类型加载方法
-	 * @param functionName 方法别名
-	 * @param parametersType 方法参数类型
-	 * @return
-	 * @throws NoSuchMethodException
+	 * 初始化,解析XML配置
 	 */
-	public static Method loadFunction(String functionName, 
-			Class<?>[] parametersType) throws NoSuchMethodException {
-		Function f = single.functionMap.get(functionName);
-		if (f == null) {
-			throw new NoSuchMethodException();
-		}
-		return f.load(parametersType);
-	}
-	
-	/**
-	 * 执行方法
-	 * @param functionName 方法别名
-	 * @param parametersType 方法参数类型
-	 * @param parameters 方法参数
-	 * @return 
-	 * @throws NoSuchMethodException
-	 * @throws IllegalAccessException
-	 * @throws InvocationTargetException
-	 * @throws InstantiationException
-	 */
-	public static Object invokeFunction(String functionName, Class<?>[] parametersType, 
-		Object[] parameters)  throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		Function f = single.functionMap.get(functionName);
-		if (f == null) {
-			throw new NoSuchMethodException();
-		}
-		return f.invoke(parametersType, parameters);
-
-	}
-	
-	/**
-	 * 
-	 * @author zsy
-	 * @version Feb 7, 2009
-	 */
-	class Function {
-		String _name;
-		Class _class;
-		Object _instance;
-		Function(Class _class, String _name) {
-			this._name = _name;
-			this._class = _class;
-			if (_class != null) {
-				try {
-					this._instance = _class.newInstance();
-				} catch (InstantiationException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
+	private void init() {
+		try {
+			DocumentBuilderFactory factory=DocumentBuilderFactory.newInstance(); 
+			DocumentBuilder builder=factory.newDocumentBuilder();
+			Document doc = builder.parse(FunctionLoader.class.getResourceAsStream(FILE_NAME));
+			NodeList rootNodes = doc.getElementsByTagName("function-configuration");
+			if (rootNodes.getLength() < 1) {
+				return;
+			}
+			rootNodes = rootNodes.item(0).getChildNodes();
+			for (int i = 0; i < rootNodes.getLength(); i++) {
+				Node beanNode = rootNodes.item(i);
+				if(!beanNode.getNodeName().equals("bean")) {
+					continue;
 				}
+				//读class类
+				String className = beanNode.getAttributes().getNamedItem("class").getNodeValue();
+				Class _class = Class.forName(className);
+				
+				NodeList subNodes = beanNode.getChildNodes();
+				List<Parameter> constructorArgs = null;
+				List<Function> functions = new ArrayList<Function>();
+				for (int j = 0; j < subNodes.getLength(); j++) {
+					Node subNode = subNodes.item(j);
+					if(subNode.getNodeName().equals("constructor-args") && constructorArgs == null) {
+						//读取类的构造参数
+						constructorArgs = parseConstructorArgs(subNode);
+					} else if (subNode.getNodeName().equals("function")) {
+						//读取方法描述
+						functions.add(parseFunctions(subNode));
+					}
+				}
+				if (functions.size() <= 0) {
+					continue;
+				}
+				Object ins = null;
+				if (constructorArgs == null || constructorArgs.size() <= 0) {
+					//使用默认构造函数
+					ins = _class.newInstance();
+				} else {
+					//使用给定的构造函数
+					Class[] cs = getParameterTypes(constructorArgs);
+					Object[] ps = getParameterValues(constructorArgs);
+					Constructor c = _class.getConstructor(cs);
+					ins = c.newInstance(ps);
+				}
+				//封装FunctionInvoker放入Map中
+				for (Function f : functions) {
+					Method m = _class.getMethod(f.methodName, getParameterTypes(f.types));
+					functionMap.put(f.name, new FunctionInvoker(m, ins));
+				}
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
+	}
+	
+	/**
+	 * 解析构参数法的描述
+	 * @param argRootNode
+	 * @return
+	 */
+	private List<Parameter> parseConstructorArgs(Node argRootNode) {
+		NodeList argsNode = argRootNode.getChildNodes();
+		List<Parameter> args = new ArrayList<Parameter>();
+		for (int i = 0; i < argsNode.getLength(); i++) {
+			Node argNode = argsNode.item(i);
+			if(argNode.getNodeName().equals("constructor-arg")) {
+				//参数类型
+				String type = argNode.getAttributes().getNamedItem("type").getNodeValue();
+				//参数值
+				String value = argNode.getTextContent();
+				args.add(new Parameter(type, value));
 			}
 		}
+		return args;
+	}
+	
+	/**
+	 * 解析方法的描述
+	 * @param funRootNode
+	 * @return
+	 */
+	private Function parseFunctions(Node funRootNode) {
+		String name = funRootNode.getAttributes().getNamedItem("name").getNodeValue();
+		String methodName = funRootNode.getAttributes().getNamedItem("method").getNodeValue();
+		Function f = new Function(name, methodName);
+		NodeList argsNode = funRootNode.getChildNodes();
+		for (int i = 0; i < argsNode.getLength(); i++) {
+			Node argNode = argsNode.item(i);
+			if(argNode.getNodeName().equals("parameter-type")) {
+				//参数类型
+				f.addType(argNode.getTextContent());
+			}
+		}
+		return f;
+	}
+	
+	/**
+	 * 取得参数列表的类型
+	 * @param parameters
+	 * @return
+	 */
+	private Class[] getParameterTypes(List<Parameter> parameters) {
+		if (parameters == null) {
+			return null;
+		}
+		Class[] types = new Class[parameters.size()];
+		for (int i = 0; i < parameters.size(); i++) {
+			types[i] = parameters.get(i).type;
+		}
+		return types;
+	}
+	
+	/**
+	 * 取得参数列表的值
+	 * @param parameters
+	 * @return
+	 */
+	private Object[] getParameterValues(List<Parameter> parameters) {
+		if (parameters == null) {
+			return null;
+		}
+		Object[] values = new Object[parameters.size()];
+		for (int i = 0; i < parameters.size(); i++) {
+			values[i] = parameters.get(i).value;
+		}
+		return values;
+	}
+	
+	/**
+	 * 参数定义
+	 * @author zsy
+	 * @version Feb 18, 2009
+	 */
+	private class Parameter {
+		Class type;//参数类型
+		Object value;//参数值
 		
-		Function(Object _instance, String _name) {
-			this._name = _name;
-			this._instance = _instance;
-			this._class = _instance.getClass();
+		public Parameter(String _type, String _value) {
+			try {
+				type = getTypeClass(_type);
+				Constructor c = type.getConstructor(new Class[]{String.class});
+				value = c.newInstance(_value);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 		}
 		
-		/**
-		 * 通过方法加载方法
-		 * @param parametersType
-		 * @return
-		 * @throws NoSuchMethodException
-		 */
-		Method load(Class<?>[] parametersType) throws NoSuchMethodException {
-			if (_class != null) {
-				return _class.getMethod(_name, parametersType);
-			} else {
-				throw new NoSuchMethodException();
+		public Parameter(String _type) {
+			try {
+				type = getTypeClass(_type);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
+			
+		}
+		
+		private Class getTypeClass(String _type) throws ClassNotFoundException {
+			if ("boolean".equals(_type)) {
+				return boolean.class;
+			} else if ("byte".equals(_type)) {
+				return byte.class;
+			} else if ("char".equals(_type)) {
+				return int.class;
+			} else if ("char".equals(_type)) {
+				return char.class;
+			} else if ("double".equals(_type)) {
+				return double.class;
+			} else if ("float".equals(_type)) {
+				return float.class;
+			} else if ("int".equals(_type)) {
+				return int.class;
+			} else if ("long".equals(_type)) {
+				return long.class;
+			} else if ("short".equals(_type)) {
+				return short.class;
+			}
+			return Class.forName(_type);
+			
+		}
+	}
+
+	/**
+	 * 方法定义
+	 * @author zsy
+	 * @version Feb 18, 2009
+	 */
+	private class Function {
+		String name;//表达式使用的方法名称
+		String methodName;//类是的实际方法名称
+		List<Parameter> types;//方法的参数类型
+		public Function(String _name, String _methodName) {
+			name = _name;
+			methodName = _methodName;
+			types = new ArrayList<Parameter>();
+		}
+		
+		public void addType(String type) {
+			types.add(new Parameter(type));
+		}
+	}
+	
+	/**
+	 * 方法调用
+	 * @author zsy
+	 * @version Feb 18, 2009
+	 */
+	private class FunctionInvoker {
+		Method method;//java方法
+		Object instance;//调用的实例
+		public FunctionInvoker(Method m, Object i) {
+			method = m;
+			instance = i;
 		}
 		
 		/**
 		 * 执行方法
-		 * @param parametersType
-		 * @param parameters
+		 * @param args 参数值列表
 		 * @return
 		 * @throws NoSuchMethodException
 		 * @throws IllegalAccessException
 		 * @throws InvocationTargetException
-		 * @throws InstantiationException
 		 */
-		Object invoke(Class<?>[] parametersType, Object[] parameters) throws NoSuchMethodException, 
+		public Object invoke(Object[] args)  throws NoSuchMethodException, 
 				IllegalAccessException, InvocationTargetException {
-			Method m = load(parametersType);
-			return m.invoke(_instance, parameters);
+			return method.invoke(instance, args);
 		}
+	}
+	
+	
+	/**
+	 * 表达式可用函数除了从配置文件“functionConfig.xml”加载外，
+	 * 还可以通过此方法运行时添加
+	 * @param functionName 方法别名，表达式使用的名称
+	 * @param instance 调用的实例名
+	 * @param method 调用的方法
+	 */
+	public static void addFunction(String functionName, Object instance, Method method) {
+		if (functionName == null || instance == null || method == null) {
+			return;
+		}
+		single.functionMap.put(functionName, single.new FunctionInvoker(method, instance));
+	}
+	
+	/**
+	 * 取得方法
+	 * @param functionName
+	 * @return
+	 * @throws NoSuchMethodException
+	 */
+	public static Method loadFunction(String functionName) throws NoSuchMethodException {
+		FunctionInvoker f = single.functionMap.get(functionName);
+		if (f == null) {
+			throw new NoSuchMethodException();
+		}
+		return f.method;
+	}
+	
+	/**
+	 * 执行方法
+	 * @param functionName
+	 * @param parameters
+	 * @return
+	 * @throws NoSuchMethodException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 */
+	public static Object invokeFunction(String functionName, Object[] parameters)  
+			throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		FunctionInvoker f = single.functionMap.get(functionName);
+		if (f == null) {
+			throw new NoSuchMethodException();
+		}
+		return f.invoke(parameters);
 	}
 
 }
