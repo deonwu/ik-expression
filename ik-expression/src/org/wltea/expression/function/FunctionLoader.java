@@ -8,14 +8,17 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -38,14 +41,20 @@ public class FunctionLoader {
 	 * 私有，禁止外部新建
 	 */
 	private FunctionLoader() {
-		init();
+		try {
+			init();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException(e);
+		}
 	}
 	
 	/**
 	 * 初始化,解析XML配置
+	 * @throws ParserConfigurationException 
+	 * @throws Exception 
 	 */
-	private void init() {
-		try {
+	private void init() throws Exception {
 			DocumentBuilderFactory factory=DocumentBuilderFactory.newInstance(); 
 			DocumentBuilder builder=factory.newDocumentBuilder();
 			Document doc = builder.parse(FunctionLoader.class.getResourceAsStream(FILE_NAME));
@@ -65,7 +74,7 @@ public class FunctionLoader {
 				
 				NodeList subNodes = beanNode.getChildNodes();
 				List<Parameter> constructorArgs = null;
-				List<Function> functions = new ArrayList<Function>();
+				HashSet<Function> functions = new HashSet<Function>();
 				for (int j = 0; j < subNodes.getLength(); j++) {
 					Node subNode = subNodes.item(j);
 					if(subNode.getNodeName().equals("constructor-args") && constructorArgs == null) {
@@ -73,7 +82,9 @@ public class FunctionLoader {
 						constructorArgs = parseConstructorArgs(subNode);
 					} else if (subNode.getNodeName().equals("function")) {
 						//读取方法描述
-						functions.add(parseFunctions(subNode));
+						if (!functions.add(parseFunctions(subNode))) {
+							throw new SAXException("方法名不能重复");
+						}
 					}
 				}
 				if (functions.size() <= 0) {
@@ -97,9 +108,6 @@ public class FunctionLoader {
 				}
 				
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
 		
 	}
 	
@@ -240,6 +248,9 @@ public class FunctionLoader {
 		String methodName;//类是的实际方法名称
 		List<Parameter> types;//方法的参数类型
 		public Function(String _name, String _methodName) {
+			if (_name == null || _methodName == null) {
+				throw new IllegalArgumentException();
+			}
 			name = _name;
 			methodName = _methodName;
 			types = new ArrayList<Parameter>();
@@ -247,6 +258,25 @@ public class FunctionLoader {
 		
 		public void addType(String type) {
 			types.add(new Parameter(type));
+		}
+		@Override
+		public int hashCode() {
+			return name.hashCode();
+		}
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#equals(java.lang.Object)
+		 */
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			final Function other = (Function) obj;
+			return name.equals(other.name);
 		}
 	}
 	
