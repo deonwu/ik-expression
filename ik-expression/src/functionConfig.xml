@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <function-configuration>
-<!-- 
-	<bean class="org.wltea.expression.test.TestFunctions">
-		<constructor-args>
-			<constructor-arg type="java.lang.Integer">123</constructor-arg>
-			<constructor-arg type="java.lang.String">aa</constructor-arg>
-		</constructor-args>
-		<function name="问好" method="sayHello">
-			<parameter-type>java.lang.String</parameter-type>
-		</function>
-	</bean>
- -->
+	<!-- 系统函数默认配置 -->
 	<bean class="org.wltea.expression.function.SystemFunctions">
 		<function name="CONTAINS" method="contains">
 			<parameter-type>java.lang.String</parameter-type>
@@ -39,4 +29,19 @@
 			<parameter-type>java.util.Date</parameter-type>
 		</function>
 	</bean>
+	
+	<!-- 用户函数配置 -->
+<!-- 
+    请在这里定制您自己的函数
+	<bean class="org.wltea.expression.test.TestFunctions">
+		<constructor-args>
+			<constructor-arg type="java.lang.Integer">123</constructor-arg>
+			<constructor-arg type="java.lang.String">aa</constructor-arg>
+		</constructor-args>
+		<function name="问好" method="sayHello">
+			<parameter-type>java.lang.String</parameter-type>
+		</function>
+	</bean>
+ -->
+
 </function-configuration>

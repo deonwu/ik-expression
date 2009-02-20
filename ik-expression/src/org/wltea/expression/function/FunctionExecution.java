@@ -50,12 +50,9 @@ public class FunctionExecution {
 			}			
 		}
 		
-		//转化方法参数类型数组
-//		Class<?>[] parametersType;
 		//转化方法参数
 		Object[] parameters;
 		try {
-//			parametersType = convertParametersType(functionName , position , args);
 			parameters = convertParameters(functionName , position , args);
 		} catch (IllegalExpressionException e) {
 			throw new IllegalArgumentException("函数\"" + functionName + "\"运行时参数类型错误");
@@ -119,14 +116,38 @@ public class FunctionExecution {
 	public static Constant varify(String functionName , int position ,  BaseDataMeta[] args) throws IllegalExpressionException{
 		if(functionName == null){
 			throw new IllegalArgumentException("函数名为空");
-		}
-		
-		//转化方法参数类型数组
-//		Class<?>[] parametersType = convertParametersType(functionName , position , args);
-		
+		}		
+
 		//通过方法名和参数数组，获取方法，及方法的返回值，并转化成ExpressionToken
 		try {
 			Method funtion = FunctionLoader.loadFunction(functionName);
+
+			//校验方法参数类型
+			Class<?>[] parametersType = funtion.getParameterTypes();
+			if(args.length == parametersType.length){
+				for(int i = 0 ; i < args.length ; i++){
+					Class<?> javaType = args[i].mapTypeToJavaClass();
+					if(javaType != null){
+						if(javaType != parametersType[i]){
+							//抛异常
+							throw new IllegalExpressionException("函数\"" + functionName + "\"参数类型不匹配"
+									, functionName
+									, position
+									);
+						}						
+					}else{
+						//传入参数为null，忽略类型校验						
+					}					
+				}				
+			}else{
+				//抛异常
+				throw new IllegalExpressionException("函数\"" + functionName + "\"参数个数不匹配"
+						, functionName
+						, position
+						);
+				
+			}
+			
 			Class<?> returnType = funtion.getReturnType();
 			
 			//转换成ExpressionToken
@@ -175,34 +196,6 @@ public class FunctionExecution {
 					);
 		}
 	}
-	
-	/**
-	 * 函数参数类型转化
-	 * @param args
-	 * @return
-	 * @throws IllegalExpressionException 
-	 */
-//	private static Class<?>[] convertParametersType(String functionName , int position  , BaseDataMeta[] args) throws IllegalExpressionException{
-//		//参数为空，返回空数组
-//		if(args == null){
-//			return new Class<?>[0];
-//		}		
-//		//转化方法参数类型数组
-//		Class<?>[] parametersType = new Class<?>[args.length];
-//		for(int i = args.length - 1 ; i >= 0 ; i--){
-//			//判定arg是否为null
-//			if(BaseDataMeta.DataType.DATATYPE_NULL == args[i].getDataType()){
-//				//抛异常
-//				throw new IllegalExpressionException("函数\"" + functionName + "\"参数类型不能为NULL"
-//						, functionName
-//						, position
-//						);
-//			}			
-//			//映射Java类型
-//			parametersType[args.length - 1 - i] = args[i].mapTypeToJavaClass();
-//		}		
-//		return parametersType;
-//	}
 
 	/**
 	 * 函数参数转化

@@ -355,6 +355,10 @@ public abstract class BaseDataMeta {
 			
 		}else if(BaseDataMeta.DataType.DATATYPE_OBJECT == this.getDataType()){
 			return Object.class;
+			
+		}else if(BaseDataMeta.DataType.DATATYPE_NULL == this.getDataType()){
+			return null;
+			
 		}
 		throw new RuntimeException("映射Java类型失败：无法识别的数据类型");
 	}

@@ -19,7 +19,7 @@ import junit.framework.TestCase;
  *
  */
 public class FunctionalityTest extends TestCase {
-
+	
 	/**
 	 * 简单测试表达式中的各个操作符
 	 * @throws Exception
@@ -167,6 +167,6 @@ public class FunctionalityTest extends TestCase {
 	
 	
 	public static void main(String[] args){
-		System.out.println(null instanceof Object);
+
 	}
 }
