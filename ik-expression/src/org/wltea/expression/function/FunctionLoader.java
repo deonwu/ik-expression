@@ -219,8 +219,6 @@ public class FunctionLoader {
 			} else if ("byte".equals(_type)) {
 				return byte.class;
 			} else if ("char".equals(_type)) {
-				return int.class;
-			} else if ("char".equals(_type)) {
 				return char.class;
 			} else if ("double".equals(_type)) {
 				return double.class;
