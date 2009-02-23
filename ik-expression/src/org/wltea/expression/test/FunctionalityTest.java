@@ -132,7 +132,7 @@ public class FunctionalityTest extends TestCase {
 		//闰年测试
 		expressions.add("$CALCDATE([2008-03-01],0,0,-1,0,0,0)");
 		expressions.add("$CALCDATE([2008-02-28 23:00:00],0,0,0,1,0,0)");
-		expressions.add("$CALCDATE([2008-02-29 23:00:00],0,0,0,1,0,0)");
+		expressions.add("$CALCDATE([2008-02-29 23:00:00],1,0,0,0,0,0)");
 		expressions.add("$CALCDATE($SYSDATE(),-1,12,0,0,0,0)");
 		//$SYSDATE
 		expressions.add("$SYSDATE()");
