@@ -18,6 +18,8 @@ import org.wltea.expression.format.reader.ElementReaderFactory;
  */
 public class ExpressionReader extends StringReader {
 	
+	private static final String IGNORE_CHAR = " \n\t";//词元间的忽略字符
+	
 	private int cruuentIndex = 0;//当前索引
 	
 	private int markIndex = 0;//被标记后索引
@@ -118,7 +120,7 @@ public class ExpressionReader extends StringReader {
 				return null;
 			}
 			char c = (char)b;
-			if (c == ' ') {//去除开始的空格
+			if (IGNORE_CHAR.indexOf(c) >= 0) {//去除开始的空格
 				prefixBlank = true;
 				continue;
 			}
