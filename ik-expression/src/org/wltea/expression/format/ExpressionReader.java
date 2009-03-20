@@ -18,7 +18,7 @@ import org.wltea.expression.format.reader.ElementReaderFactory;
  */
 public class ExpressionReader extends StringReader {
 	
-	private static final String IGNORE_CHAR = " \n\t";//词元间的忽略字符
+	private static final String IGNORE_CHAR = " \r\n\t";//词元间的忽略字符
 	
 	private int cruuentIndex = 0;//当前索引
 	
