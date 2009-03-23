@@ -22,14 +22,14 @@ public class IntegrationTest extends TestCase {
 		System.out.println("testPriority");
 
 		ArrayList<String> expressions = new ArrayList<String>();
-		expressions.add("-(10 + (23 - 3) * (4 / 5)) % 6");//2
+		expressions.add("-(10 + (23 - 3)\r\n * (4 / 5)) % 6");//2
 		expressions.add("true || false && false ? false : true ");//false
-		expressions.add("(true || false) && false ? false : true ");//true
-		expressions.add("!true || !false && (false ? false : true) ");//true
-		expressions.add("!(true || !false && (false ? false : true)) ");//false
+		expressions.add("(true || false) && false \r\n? false : true ");//true
+		expressions.add("!true || !false && (false ? \r\nfalse : true) ");//true
+		expressions.add("!(true || !false && \r\n(false ? false : true)) ");//false
 		expressions.add("!(true || !false && false ? false : true) ");//true
-		expressions.add("[2009-08-08] + false + 123 + \"a String\" + null + 1234 + 12345.88 + true");
-		expressions.add("[2009-08-08] + false + 123 + \"a String\" + null + (1234 + 12345.88) + true");
+		expressions.add("[2009-08-08] + false + 123 \r\n+ \"a String\" + null + 1234 + 12345.88 + true");
+		expressions.add("[2009-08-08] + false + 123 + \"a String\" + null \r\n+ (1234 + 12345.88) + true");
 
 		for(String expression : expressions){
 			System.out.println("expression : " + expression);
@@ -51,9 +51,9 @@ public class IntegrationTest extends TestCase {
 
 		ArrayList<String> expressions = new ArrayList<String>();
 		expressions.add("$CONTAINS(\"aabbcc\" + \"abc\",\"abc\")");
-		expressions.add("$CONTAINS(\"aabbcc\" + \"abc\",\"abc\") ? $STARTSWITH(\"abcbcc\",\"abc\") : $ENDSWITH(\"aabcbcc\",\"abc\") ");
-		expressions.add("$CONTAINS(\"aabbcc\" , \"abc\") ? $STARTSWITH(\"abcbcc\",\"abc\") : $ENDSWITH(\"aabcbcc\",\"abc\") ");
-		expressions.add("$CALCDATE([2008-03-01],0,0,-(10 + (23 - 3) * (4 / 5)) % 6,0,0,0)");
+		expressions.add("$CONTAINS(\"aabbcc\" + \"abc\",\"abc\") ? \r\n$STARTSWITH(\"abcbcc\",\"abc\") : \r\n$ENDSWITH(\"aabcbcc\",\"abc\") ");
+		expressions.add("$CONTAINS(\"aabbcc\" , \"abc\") ?\r\n $STARTSWITH(\"abcbcc\",\"abc\") \r\n: $ENDSWITH(\"aabcbcc\",\"abc\") ");
+		expressions.add("$CALCDATE([2008-03-01],\r\n0,0,-(10 + (23 - 3) * (4 / 5)) % 6,0,0,0)");
 
 		for(String expression : expressions){
 			System.out.println("expression : " + expression);
