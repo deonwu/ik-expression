@@ -178,6 +178,8 @@ public class FunctionExecution {
 			}else if(Object.class == returnType){
 				return new Constant(BaseDataMeta.DataType.DATATYPE_OBJECT , null);	
 				
+			}else if(void.class == returnType){
+					return new Constant(BaseDataMeta.DataType.DATATYPE_OBJECT , null);					
 			}else{
 				throw new IllegalStateException("解析器内部错误：不支持的函数返回类型");
 			}
