@@ -66,4 +66,29 @@ public class ExpressionEvaluator {
 			VariableContainer.removeVariableMap();
 		}
 	}
+	
+	/**
+	 * 逐个添加表达式上下文变量
+	 * @param variable
+	 */
+	public static void addVarible(Variable variable){
+		//添加变来到脚本变量容器
+		VariableContainer.addVariable(variable);
+	}	
+	
+	/**
+	 * 批量添加表达式上下文变量
+	 * @param variables
+	 */
+	public static void addVaribles(Collection<Variable> variables){
+		//获取上下文的变量，设置到脚本执行器中
+		if(variables != null && variables.size() > 0){						
+			for(Variable var : variables ){
+				//添加变来到脚本变量容器
+				VariableContainer.addVariable(var);
+			}
+		}		
+	}
+
+	
 }
