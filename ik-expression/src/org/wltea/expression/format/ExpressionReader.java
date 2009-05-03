@@ -20,7 +20,7 @@ public class ExpressionReader extends StringReader {
 	
 	private static final String IGNORE_CHAR = " \r\n\t";//词元间的忽略字符
 	
-	private int cruuentIndex = 0;//当前索引
+	private int currentIndex = 0;//当前索引
 	
 	private int markIndex = 0;//被标记后索引
 	
@@ -35,7 +35,7 @@ public class ExpressionReader extends StringReader {
 	  * @return
 	  */
 	public int getCruuentIndex() {
-		return cruuentIndex;
+		return currentIndex;
 	}
 	
 	/**
@@ -54,7 +54,7 @@ public class ExpressionReader extends StringReader {
 	public int read() throws IOException {
 		int c = super.read();
 		if (c != -1) {
-			cruuentIndex++;
+			currentIndex++;
 			markIndex++;
 		}
 		return c;
@@ -64,7 +64,7 @@ public class ExpressionReader extends StringReader {
 	public int read(char[] cbuf) throws IOException {
 		int c = super.read(cbuf);
 		if (c > 0) {
-			cruuentIndex += c;
+			currentIndex += c;
 			markIndex += c;
 		}
 		return c;
@@ -74,7 +74,7 @@ public class ExpressionReader extends StringReader {
 	public int read(CharBuffer target) throws IOException {
 		int c = super.read(target);
 		if (c > 0) {
-			cruuentIndex += c;
+			currentIndex += c;
 			markIndex += c;
 		}
 		return c;
@@ -85,7 +85,7 @@ public class ExpressionReader extends StringReader {
 	public int read(char[] cbuf, int off, int len) throws IOException {
 		int c = super.read(cbuf, off, len);
 		if (c > 0) {
-			cruuentIndex += c;
+			currentIndex += c;
 			markIndex += c;
 		}
 		return c;
@@ -94,7 +94,7 @@ public class ExpressionReader extends StringReader {
 	@Override
 	public void reset() throws IOException {
 		super.reset();
-		cruuentIndex = cruuentIndex - markIndex;
+		currentIndex = currentIndex - markIndex;
 	}
 	
 	@Override

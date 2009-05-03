@@ -141,6 +141,9 @@ public class FunctionalityTest extends TestCase {
 		expressions.add("$DAYEQUALS([2008-01-02],[2008-01-01])");
 		expressions.add("$DAYEQUALS($SYSDATE(),[2009-2-10])");
 		
+		expressions.add("\"SELECT FGUID FROM S_OrgSystem WHERE (FDEPT like 'AF' AND FPOSITION like 'HQZG' AND FPERSON like '%')\"");
+		
+		
 		for(String expression : expressions){
 			try {
 				System.out.println("expression : " + expression);
