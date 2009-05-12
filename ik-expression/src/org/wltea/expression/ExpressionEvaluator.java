@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.wltea.expression.datameta.Constant;
 import org.wltea.expression.datameta.Variable;
-import org.wltea.expression.datameta.VariableContainer;
 
 /**
  * @author 林良益，卓诗垚

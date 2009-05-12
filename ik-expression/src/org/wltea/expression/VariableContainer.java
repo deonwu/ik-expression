@@ -1,10 +1,12 @@
 /**
  * 
  */
-package org.wltea.expression.datameta;
+package org.wltea.expression;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.wltea.expression.datameta.Variable;
 
 /**
  * 表达式上下文变量容器
@@ -40,6 +42,10 @@ public class VariableContainer {
 			return null;
 		}
 			
+	}
+	
+	public static Variable removeVariable(String variableName){
+		return getVariableMap().remove(variableName);
 	}
 	
 	public static void removeVariableMap(){

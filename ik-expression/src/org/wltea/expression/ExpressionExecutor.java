@@ -14,7 +14,6 @@ import org.wltea.expression.datameta.BaseDataMeta;
 import org.wltea.expression.datameta.Constant;
 import org.wltea.expression.datameta.Reference;
 import org.wltea.expression.datameta.Variable;
-import org.wltea.expression.datameta.VariableContainer;
 import org.wltea.expression.datameta.BaseDataMeta.DataType;
 
 import org.wltea.expression.format.ExpressionParser;
