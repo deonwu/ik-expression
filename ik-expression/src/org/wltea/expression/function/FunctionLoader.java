@@ -30,7 +30,7 @@ import org.xml.sax.SAXException;
  */
 @SuppressWarnings("unchecked")
 public class FunctionLoader {
-	private static final String FILE_NAME = "/functionConfig.xml";
+	private static final String FILE_NAME = "/IKExpression.cfg.xml";
 	
 	private static FunctionLoader single = new FunctionLoader();
 	

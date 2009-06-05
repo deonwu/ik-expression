@@ -130,7 +130,7 @@ public class VariableTest extends TestCase {
 		}
 		//定义表达式
 		String expression = "\"Hello World \" + 用户名";
-		//给表达式中的变量userName付上下文的值
+		//给表达式中的变量 [用户名] 付上下文的值
 		List<Variable> variables = new ArrayList<Variable>();
 		variables.add(Variable.createVariable("用户名", args[0]));
 		//执行表达式
