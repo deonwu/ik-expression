@@ -3,6 +3,7 @@ package org.wltea.expression.test;
 import java.util.ArrayList;
 
 import org.wltea.expression.ExpressionEvaluator;
+import org.wltea.expression.IllegalExpressionException;
 
 import junit.framework.TestCase;
 
@@ -33,6 +34,11 @@ public class IntegrationTest extends TestCase {
 
 		for(String expression : expressions){
 			System.out.println("expression : " + expression);
+			try {
+				System.out.println(ExpressionEvaluator.compile(expression));
+			} catch (IllegalExpressionException e) {
+				e.printStackTrace();
+			}
 			Object result = ExpressionEvaluator.evaluate(expression);
 			System.out.println("result = " + result);
 			System.out.println();
@@ -57,6 +63,11 @@ public class IntegrationTest extends TestCase {
 
 		for(String expression : expressions){
 			System.out.println("expression : " + expression);
+			try {
+				System.out.println(ExpressionEvaluator.compile(expression));
+			} catch (IllegalExpressionException e) {
+				e.printStackTrace();
+			}			
 			Object result = ExpressionEvaluator.evaluate(expression);
 			System.out.println("result = " + result);
 			System.out.println();
