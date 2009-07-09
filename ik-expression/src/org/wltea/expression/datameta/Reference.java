@@ -6,6 +6,7 @@ package org.wltea.expression.datameta;
 import org.wltea.expression.ExpressionToken;
 import org.wltea.expression.IllegalExpressionException;
 import org.wltea.expression.ExpressionToken.ETokenType;
+import org.wltea.expression.datameta.BaseDataMeta.DataType;
 import org.wltea.expression.function.FunctionExecution;
 import org.wltea.expression.op.Operator;
 
@@ -22,12 +23,27 @@ public class Reference {
 	private ExpressionToken token;
 	
 	private Constant[] arguments;
+	//引用对象实际的数据类型
+	private DataType dataType;
 	
-	public Reference(ExpressionToken token , Constant[] args){
+	public Reference(ExpressionToken token , Constant[] args) throws IllegalExpressionException{
 		this.token = token;
 		this.arguments = args;
+		//记录Reference实际的数据类型
+		if(ExpressionToken.ETokenType.ETOKEN_TYPE_FUNCTION == token.getTokenType()){
+			Constant result = FunctionExecution.varify(token.getFunctionName(), token.getStartPosition() , args);
+			dataType = result.getDataType();
+		}else if(ExpressionToken.ETokenType.ETOKEN_TYPE_OPERATOR == token.getTokenType()){
+			Operator op = token.getOperator();
+			Constant result = op.verify(token.getStartPosition() , args);
+			dataType = result.getDataType();
+		}
 	}
 	
+	public DataType getDataType() {
+		return dataType;
+	}
+
 	public Constant[] getArgs() {
 		return arguments;
 	}

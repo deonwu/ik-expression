@@ -42,7 +42,7 @@ public class Op_OR implements IOperatorExecution {
 		
 		//运算：
 		//如果第一参数为引用，则执行引用
-		if(DataType.DATATYPE_REFERENCE == first.getDataType()){
+		if(first.isReference()){
 			Reference firstRef = (Reference)first.getDataValue();
 			first = firstRef.execute();
 		}
@@ -52,7 +52,7 @@ public class Op_OR implements IOperatorExecution {
 				return first;
 			}else{
 				//如果第二参数为引用，则执行引用
-				if(DataType.DATATYPE_REFERENCE == second.getDataType()){
+				if(second.isReference()){
 					Reference secondRef = (Reference)second.getDataValue();
 					second = secondRef.execute();
 				}

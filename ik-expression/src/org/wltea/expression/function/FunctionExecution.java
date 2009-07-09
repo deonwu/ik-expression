@@ -12,7 +12,6 @@ import org.wltea.expression.IllegalExpressionException;
 import org.wltea.expression.datameta.BaseDataMeta;
 import org.wltea.expression.datameta.Constant;
 import org.wltea.expression.datameta.Reference;
-import org.wltea.expression.datameta.BaseDataMeta.DataType;
 
 
 /**
@@ -44,7 +43,7 @@ public class FunctionExecution {
 		}
 		for(int i = 0 ; i < args.length ; i++){
 			//如果参数为引用类型，则执行引用
-			if(DataType.DATATYPE_REFERENCE == args[i].getDataType()){
+			if(args[i].isReference()){
 				Reference ref = (Reference)args[i].getDataValue();
 				args[i] = ref.execute();
 			}			

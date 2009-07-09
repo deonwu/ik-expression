@@ -4,8 +4,9 @@
 package org.wltea.expression;
 
 import org.wltea.expression.datameta.Constant;
-import org.wltea.expression.datameta.BaseDataMeta.DataType;
+import org.wltea.expression.datameta.Reference;
 import org.wltea.expression.datameta.Variable;
+import org.wltea.expression.datameta.BaseDataMeta.DataType;
 import org.wltea.expression.op.Operator;
 
 /**
@@ -45,7 +46,6 @@ public class ExpressionToken {
 	//词元在表达式中的起始位置
 	private int startPosition = -1;
 	
-	
 	public static ExpressionToken createConstantToken(DataType dataType , Object dataValue){
 		ExpressionToken instance = new ExpressionToken();
 		instance.constant = new Constant(dataType , dataValue);
@@ -76,6 +76,16 @@ public class ExpressionToken {
 		instance.tokenText = variableName;
 		return instance;
 	}
+	
+	public static ExpressionToken createReference(Reference ref){
+		ExpressionToken instance = new ExpressionToken();
+		instance.constant = new Constant(ref);
+		instance.tokenType = ETokenType.ETOKEN_TYPE_CONSTANT;
+		if(ref != null){
+			instance.tokenText=  instance.constant.getDataValueText();
+		}
+		return instance;
+	}	
 	
 	public static ExpressionToken createFunctionToken(String functionName){
 		if(functionName == null){

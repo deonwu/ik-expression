@@ -37,8 +37,6 @@ public abstract class BaseDataMeta {
 		DATATYPE_DATE ,
 		//集合对象
 		DATATYPE_LIST,
-		//引用
-		DATATYPE_REFERENCE,
 		//通用对象类型
 		DATATYPE_OBJECT,
 		;
@@ -49,6 +47,8 @@ public abstract class BaseDataMeta {
 	DataType dataType;
 	//值
 	Object dataValue;
+	//引用类型标识
+	private boolean isReference;
 	
 	public BaseDataMeta(DataType dataType , Object dataValue){
 		this.dataType = dataType;
@@ -59,7 +59,11 @@ public abstract class BaseDataMeta {
 	}
 
 	public DataType getDataType() {
-		return dataType;
+		if(isReference){
+			return this.getReference().getDataType();
+		}else{
+			return dataType;
+		}
 	}	
 	
 	public Object getDataValue() {
@@ -210,7 +214,7 @@ public abstract class BaseDataMeta {
 	 * @return
 	 */
 	public Reference getReference() {
-		if(DataType.DATATYPE_REFERENCE != this.dataType){
+		if(!this.isReference){
 			throw new UnsupportedOperationException("当前常量类型不支持此操作");
 		}
 		return (Reference)dataValue;
@@ -226,6 +230,10 @@ public abstract class BaseDataMeta {
 		}else if(o instanceof BaseDataMeta){
 			
 			BaseDataMeta bdo = (BaseDataMeta)o;
+			if(this.isReference() && bdo.isReference){
+				return this.getReference() == bdo.getReference();
+			}
+			
 			if(bdo.dataType == dataType){
 				if(bdo.dataValue != null 
 						&& bdo.dataValue.equals(dataValue)){
@@ -309,7 +317,7 @@ public abstract class BaseDataMeta {
 					throw new IllegalArgumentException("数据类型不匹配; 类型：" + dataType + ",值:" + dataValue);
 				}
 				
-			}else if(DataType.DATATYPE_REFERENCE == dataType){
+			}else if(this.isReference){
 				try {
 					getReference();
 				} catch (UnsupportedOperationException e) {
@@ -325,7 +333,9 @@ public abstract class BaseDataMeta {
 
 			}
 		}
-	}	
+	}
+	
+	
 
 	public Class<?> mapTypeToJavaClass(){
 		
@@ -361,6 +371,78 @@ public abstract class BaseDataMeta {
 			
 		}
 		throw new RuntimeException("映射Java类型失败：无法识别的数据类型");
+	}
+	
+	/**
+	 * 检查数据类型的兼容性
+	 * 类型相同，一定兼容
+	 * 类型不同，则可兼容的数据类型包括int ，long ，float ， double
+	 * null 类型与所有类型兼容
+	 * @param another
+	 * @return
+	 */
+	public boolean isCompatibleType(BaseDataMeta another){
+		
+		if(DataType.DATATYPE_NULL == this.getDataType() 
+				|| DataType.DATATYPE_NULL == another.getDataType()){
+			return true;
+			
+		}else if(this.getDataType() == another.getDataType()){
+			return true;
+			
+		}else if(DataType.DATATYPE_INT != this.getDataType() 
+				&& DataType.DATATYPE_LONG != this.getDataType()
+				&& DataType.DATATYPE_FLOAT != this.getDataType()
+				&& DataType.DATATYPE_DOUBLE != this.getDataType()){
+			return false;
+			
+		}else if(DataType.DATATYPE_INT != another.getDataType() 
+				&& DataType.DATATYPE_LONG != another.getDataType()
+				&& DataType.DATATYPE_FLOAT != another.getDataType()
+				&& DataType.DATATYPE_DOUBLE != another.getDataType()){
+			return false;
+			
+		}else{
+			return true;
+		}
+	}
+	
+	/**
+	 * 获取两数的兼容类型
+	 * 如果两个数据类型无法兼容，返回null
+	 * @param another
+	 * @return
+	 */
+	public DataType getCompatibleType(BaseDataMeta another){
+		
+		if(isCompatibleType(another)){
+			if(DataType.DATATYPE_NULL == this.getDataType()){
+				return another.getDataType();
+				
+			}else if(DataType.DATATYPE_NULL == another.getDataType()){
+				return this.getDataType();
+				
+			}else if(this.getDataType() == another.getDataType()){
+				return this.getDataType();
+				
+			}else if(DataType.DATATYPE_DOUBLE == this.getDataType() 
+						|| DataType.DATATYPE_DOUBLE == another.getDataType()){
+				return DataType.DATATYPE_DOUBLE;
+				
+			}else if(DataType.DATATYPE_FLOAT == this.getDataType() 
+					|| DataType.DATATYPE_FLOAT == another.getDataType()){
+				return DataType.DATATYPE_FLOAT;
+				
+			}else if(DataType.DATATYPE_LONG == this.getDataType() 
+					|| DataType.DATATYPE_LONG == another.getDataType()){
+				return DataType.DATATYPE_LONG;
+				
+			}else{
+				return DataType.DATATYPE_INT;
+			}
+		}else{
+			return null;
+		}
 	}
 	
 	/**
@@ -402,6 +484,14 @@ public abstract class BaseDataMeta {
 		}else {
 			throw new RuntimeException("映射Java类型失败：无法识别的数据类型");
 		}	
+	}
+
+	public boolean isReference() {
+		return isReference;
+	}
+
+	void setReference(boolean isReference) {
+		this.isReference = isReference;
 	}	
 	
 }

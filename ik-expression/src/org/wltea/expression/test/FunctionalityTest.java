@@ -76,6 +76,8 @@ public class FunctionalityTest extends TestCase {
 		expressions.add("[2009-08-08] + false + 123 + \"a String\" + null + 1234 + 12345.88 + true");
 		//SELECT
 		expressions.add("false ? true ? \"路径1\" : \"路经2\" : true ? \"路径3\" : \"路径4\" ");
+		expressions.add("100>10 ? 11:1.0 ");
+		expressions.add("100>10 ? 11111L:3.3f ");
 		//APPEND
 		expressions.add("\"a String \" # true # 111 # [2009-10-10 10:10:10] # null");
 		
@@ -91,7 +93,7 @@ public class FunctionalityTest extends TestCase {
 				String s2 = ee.tokensToString(tokens);
 //				System.out.println("s2 -- " + s2);
 				Assert.assertEquals(s1, s2);
-				System.out.println("result = " + ee.execute(tokens).getDataValueText());
+				System.out.println("result = " + ee.execute(tokens).toJavaObject());
 				System.out.println();
 				
 			} catch (IllegalExpressionException e) {
@@ -153,7 +155,7 @@ public class FunctionalityTest extends TestCase {
 				String s2 = ee.tokensToString(tokens);
 				//System.out.println("s2 -- " + s2);
 				Assert.assertEquals(s1, s2);
-				System.out.println("result = " + ee.execute(tokens).getDataValueText());
+				System.out.println("result = " + ee.execute(tokens).toJavaObject());
 				System.out.println();
 				
 			} catch (IllegalExpressionException e) {
@@ -167,6 +169,6 @@ public class FunctionalityTest extends TestCase {
 	
 	
 	public static void main(String[] args){
-
+		System.out.println(100>10 ? 11111L:3.3f );
 	}
 }

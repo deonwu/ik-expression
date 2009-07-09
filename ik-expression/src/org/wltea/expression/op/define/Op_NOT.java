@@ -7,7 +7,6 @@ import org.wltea.expression.IllegalExpressionException;
 import org.wltea.expression.datameta.BaseDataMeta;
 import org.wltea.expression.datameta.Constant;
 import org.wltea.expression.datameta.Reference;
-import org.wltea.expression.datameta.BaseDataMeta.DataType;
 import org.wltea.expression.op.IOperatorExecution;
 import org.wltea.expression.op.Operator;
 
@@ -37,7 +36,7 @@ public class Op_NOT implements IOperatorExecution {
 		}
 	
 		//如果第一参数为引用，则执行引用
-		if(DataType.DATATYPE_REFERENCE == first.getDataType()){
+		if(first.isReference()){
 			Reference firstRef = (Reference)first.getDataValue();
 			first = firstRef.execute();
 		}

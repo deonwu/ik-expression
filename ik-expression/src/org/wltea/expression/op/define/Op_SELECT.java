@@ -45,27 +45,32 @@ public class Op_SELECT implements IOperatorExecution {
 		}
 		
 		//如果第一参数为引用，则执行引用
-		if(DataType.DATATYPE_REFERENCE == first.getDataType()){
+		if(first.isReference()){
 			Reference firstRef = (Reference)first.getDataValue();
 			first = firstRef.execute();
 		}
 		if( BaseDataMeta.DataType.DATATYPE_BOOLEAN ==  first.getDataType()){
+			//获取second和third参数的兼容类型
+			DataType compatibleType = second.getCompatibleType(third);
+			
 			if(first.getBooleanValue()){
 				//选择第二参数
 				//如果第二参数为引用，则执行引用
-				if(DataType.DATATYPE_REFERENCE == second.getDataType()){
+				if(second.isReference()){
 					Reference secondRef = (Reference)second.getDataValue();
 					second = secondRef.execute();
-				}				
-				return second;
+				}
+				Constant result = new Constant(compatibleType , second.getDataValue());
+				return result;
 			}else{
 				//选择第三参数
 				//如果第三参数为引用，则执行引用
-				if(DataType.DATATYPE_REFERENCE == third.getDataType()){
+				if(third.isReference()){
 					Reference thirdRef = (Reference)third.getDataValue();
 					third = thirdRef.execute();
 				}				
-				return third;				
+				Constant result = new Constant(compatibleType , third.getDataValue());
+				return result;
 			}
 			
 		}else{
@@ -103,14 +108,9 @@ public class Op_SELECT implements IOperatorExecution {
 					, opPositin);
 		}
 		//判定二，三参数类型是否相同
-		if(second.getDataType() == third.getDataType()){
-			return new Constant(second.getDataType(), null);
-			
-		}else if(BaseDataMeta.DataType.DATATYPE_NULL == second.getDataType()){
-			return new Constant(third.getDataType(), null);
-			
-		}else if(BaseDataMeta.DataType.DATATYPE_NULL == third.getDataType()){
-			return new Constant(second.getDataType(), null);
+		DataType compatibleType = second.getCompatibleType(third);
+		if(compatibleType != null){
+			return new Constant(compatibleType, null);
 			
 		}else{
 			throw new IllegalExpressionException("操作符\"" + THIS_OPERATOR.getToken() + "\"二，三参数类型不一致"
@@ -118,5 +118,6 @@ public class Op_SELECT implements IOperatorExecution {
 					, opPositin);
 		}
 	}
+	
 
 }

@@ -7,7 +7,6 @@ import org.wltea.expression.IllegalExpressionException;
 import org.wltea.expression.datameta.BaseDataMeta;
 import org.wltea.expression.datameta.Constant;
 import org.wltea.expression.datameta.Reference;
-import org.wltea.expression.datameta.BaseDataMeta.DataType;
 import org.wltea.expression.op.IOperatorExecution;
 import org.wltea.expression.op.Operator;
 
@@ -44,12 +43,12 @@ public class Op_MOD implements IOperatorExecution {
 		}
 		
 		//如果第一参数为引用，则执行引用
-		if(DataType.DATATYPE_REFERENCE == first.getDataType()){
+		if(first.isReference()){
 			Reference firstRef = (Reference)first.getDataValue();
 			first = firstRef.execute();
 		}
 		//如果第二参数为引用，则执行引用
-		if(DataType.DATATYPE_REFERENCE == second.getDataType()){
+		if(second.isReference()){
 			Reference secondRef = (Reference)second.getDataValue();
 			second = secondRef.execute();
 		}		

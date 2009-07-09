@@ -39,12 +39,12 @@ public class Op_APPEND implements IOperatorExecution {
 			throw new NullPointerException("操作符\"" + THIS_OPERATOR.getToken() + "\"参数为空");
 		}
 		//如果第一参数为引用，则执行引用
-		if(DataType.DATATYPE_REFERENCE == first.getDataType()){
+		if(first.isReference()){
 			Reference firstRef = (Reference)first.getDataValue();
 			first = firstRef.execute();
 		}
 		//如果第二参数为引用，则执行引用
-		if(DataType.DATATYPE_REFERENCE == second.getDataType()){
+		if(second.isReference()){
 			Reference secondRef = (Reference)second.getDataValue();
 			second = secondRef.execute();
 		}

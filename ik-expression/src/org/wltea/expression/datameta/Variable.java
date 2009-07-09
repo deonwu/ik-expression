@@ -71,10 +71,6 @@ public class Variable extends BaseDataMeta{
 		if(variableName == null){
 			throw new IllegalArgumentException("非法参数：变量名为空");
 		}
-
-		if(DataType.DATATYPE_REFERENCE == variableDataType){
-			throw new IllegalArgumentException("非法参数：变量类型不能为DATATYPE_REFERENCE,该类型不对外开放");
-		}
 		
 		this.variableName = variableName ;
 	}
