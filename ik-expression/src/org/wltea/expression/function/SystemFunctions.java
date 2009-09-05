@@ -76,7 +76,7 @@ public class SystemFunctions {
 	 * @param days 日偏移量
 	 * @param hours 小时偏移量
 	 * @param minutes 分偏移量
-	 * @param secondes 秒偏移量
+	 * @param seconds 秒偏移量
 	 * @return 偏移后的日期
 	 */
 	public Date calcDate(Date date ,int years , int months , int days , int hours , int minutes , int seconds){
