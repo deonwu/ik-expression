@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.wltea.expression.ExpressionEvaluator;
+import org.wltea.expression.PreparedExpression;
 import org.wltea.expression.datameta.Variable;
 
 import junit.framework.TestCase;
@@ -126,15 +127,48 @@ public class VariableTest extends TestCase {
 	public static void main(String[] args){
 		if(args.length == 0){
 			args = new String[1];
-			args[0] = "IK Expression";
+			args[0] = "IK Expression V2.0.5";
 		}
 		//定义表达式
-		String expression = "\"Hello World \" + 用户名";
-		//给表达式中的变量 [用户名] 付上下文的值
+		String expression = "\"Hello \" + 版本";
+		//给表达式中的变量 [版本] 付上下文的值
 		List<Variable> variables = new ArrayList<Variable>();
-		variables.add(Variable.createVariable("用户名", args[0]));
+		variables.add(Variable.createVariable("版本", args[0]));
+		
+		//预编译表达式
+		PreparedExpression pe  = ExpressionEvaluator.preparedCompile(expression, variables);
 		//执行表达式
-		Object result = ExpressionEvaluator.evaluate(expression, variables);
-		System.out.println("Result = " + result);		
+		Object result = pe.execute();
+		System.out.println("Result = " + result);
+		
+		//更改参数，再次执行预编译式
+		pe.setArgument("版本", "IK Expression V2.0.6");
+		result = pe.execute();
+		System.out.println("Result = " + result);
+		
+		
+		
+		//定义表达式
+		
+//		String expression = "$问好(数字类型)";
+//		//给表达式中的变量 [用户名] 付上下文的值
+//		List<Variable> variables = new ArrayList<Variable>();
+//		variables.add(new Variable("数字类型" , DataType.DATATYPE_OBJECT , new Integer(0)));
+//		//执行表达式
+//		PreparedExpression pe  = ExpressionEvaluator.preparedCompile(expression, variables);
+//		System.out.println("Result = " + pe.execute());
+//		
+//		pe.setArgument("数字类型", new Float(100));
+//		System.out.println("Result = " + pe.execute());		
+//		
+//		pe.setArgument("数字类型", new Double(100));
+//		System.out.println("Result = " + pe.execute());
+		
+//		Object result = null;  
+//		result = ExpressionEvaluator.evaluate("$问好(1.0)");     
+//		System.out.println("Result = " + result);     
+//		result = ExpressionEvaluator.evaluate("$问好(1)");     
+//		System.out.println("Result = " + result);  
+		
 	}	
 }

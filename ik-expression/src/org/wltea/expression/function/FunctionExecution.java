@@ -127,9 +127,11 @@ public class FunctionExecution {
 				for(int i = args.length - 1 ; i >= 0  ; i--){
 					Class<?> javaType = args[i].mapTypeToJavaClass();
 					if(javaType != null){
-						if(javaType != parametersType[parametersType.length - i - 1]){
+						
+						if(Object.class != parametersType[parametersType.length - i - 1] && 
+								javaType != parametersType[parametersType.length - i - 1]){
 							//抛异常
-							throw new IllegalExpressionException("函数\"" + functionName + "\"参数类型不匹配,函数类型为：" + parametersType[i].getName() + " 传入参数类型为：" + javaType.getName() 
+							throw new IllegalExpressionException("函数\"" + functionName + "\"参数类型不匹配,函数参数定义类型为：" + parametersType[i].getName() + " 传入参数实际类型为：" + javaType.getName() 
 									, functionName
 									, position
 									);

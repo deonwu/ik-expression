@@ -21,7 +21,7 @@ import org.wltea.expression.function.FunctionExecution;
 import org.wltea.expression.op.Operator;
 
 /**
- * 表达式执行器
+ * IK-Expression表达式执行器
  * @author 林良益，卓诗垚
  * @version 2.0 
  * 2008-09-18

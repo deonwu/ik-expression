@@ -11,6 +11,8 @@ import org.wltea.expression.datameta.Constant;
 import org.wltea.expression.datameta.Variable;
 
 /**
+ * IK-Expression 表达式解析器（主入口程序）
+ * ExpressionEvaluator 是多线程安全的
  * @author 林良益，卓诗垚
  * @version 2.0 
  * Sep 25, 2008
@@ -22,7 +24,7 @@ public class ExpressionEvaluator {
 	 * @param expression
 	 * @return
 	 */
-	public static String compile(String expression)throws IllegalExpressionException{
+	public static String compile(String expression){
 		return compile(expression , null);
 	}
 	
@@ -33,7 +35,7 @@ public class ExpressionEvaluator {
 	 * @return
 	 * @throws IllegalExpressionException 
 	 */
-	public static String compile(String expression, Collection<Variable> variables) throws IllegalExpressionException{
+	public static String compile(String expression, Collection<Variable> variables){
 		if (expression == null) {
 			throw new RuntimeException("表达式为空");
 		}
@@ -53,12 +55,52 @@ public class ExpressionEvaluator {
 			expTokens = ee.compile(expTokens);	
 			//以字符串形式输出RPN
 			return ee.tokensToString(expTokens);
+		} catch (IllegalExpressionException e) {			
+			e.printStackTrace();
+			throw new RuntimeException("表达式：\"" + expression + "\" 编译期检查异常");
 		}finally{
 			//释放脚本变量容器
 			VariableContainer.removeVariableMap();
 		}
 	}
 	
+	/**
+	 * 获取预编译的表达式对象 
+	 * @param expression 表达式的字符串表示
+	 * @param variables 表达式的参数集合
+	 * @return PreparedExpression 编译的表达式对象
+	 * @throws IllegalExpressionException
+	 */
+	public static PreparedExpression preparedCompile(String expression ,  Collection<Variable> variables){
+		if (expression == null) {
+			throw new RuntimeException("表达式为空");
+		}
+		
+		ExpressionExecutor ee = new ExpressionExecutor();
+		try{
+			//获取上下文的变量，设置到脚本执行器中
+			if(variables != null && variables.size() > 0){						
+				for(Variable var : variables ){
+					//添加变来到脚本变量容器
+					VariableContainer.addVariable(var);
+				}
+			}
+			//解析表达式词元
+			List<ExpressionToken> expTokens = ee.analyze(expression);
+			//转化RPN，并验证
+			expTokens = ee.compile(expTokens);
+			//生成预编译表达式
+			PreparedExpression pe = new PreparedExpression(expression , expTokens , VariableContainer.getVariableMap());
+			return pe;
+		} catch (IllegalExpressionException e) {
+			e.printStackTrace();
+			throw new RuntimeException("表达式：\"" + expression + "\" 预编译异常");
+		}finally{
+			//释放脚本变量容器
+			VariableContainer.removeVariableMap();
+		}
+	}
+
 	
 	/**
 	 * 执行无变量表达式

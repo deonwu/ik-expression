@@ -29,27 +29,25 @@ public class VariableContainer {
 		return variableMap;
 	}
 	
+	public static void setVariableMap(Map<String , Variable> variableMap){
+		removeVariableMap();
+		if(variableMap != null){
+			variableMapThreadLocal.set(variableMap);
+		}
+	}
+	
+	public static void removeVariableMap(){
+		Map<String , Variable> variableMap = variableMapThreadLocal.get();
+		if(variableMap != null){
+			variableMap.clear();
+		}		
+		variableMapThreadLocal.remove();		
+	}	
+	
 	public static void addVariable(Variable variable){
 		if(variable != null){
 			getVariableMap().put(variable.getVariableName(), variable);
 		}
-	}
-	
-	public static Variable removeVariable(Variable variable){
-		if(variable != null){
-			return getVariableMap().remove(variable.getVariableName());
-		}else {
-			return null;
-		}
-			
-	}
-	
-	public static Variable removeVariable(String variableName){
-		return getVariableMap().remove(variableName);
-	}
-	
-	public static void removeVariableMap(){
-		variableMapThreadLocal.remove();		
 	}
 	
 	public static Variable getVariable(String variableName){
@@ -58,6 +56,18 @@ public class VariableContainer {
 		}else {
 			return null;
 		}
+	}
+	
+	public static Variable removeVariable(String variableName){
+		return getVariableMap().remove(variableName);
+	}
+	
+	public static Variable removeVariable(Variable variable){
+		if(variable != null){
+			return getVariableMap().remove(variable.getVariableName());
+		}else {
+			return null;
+		}			
 	}
 
 }
