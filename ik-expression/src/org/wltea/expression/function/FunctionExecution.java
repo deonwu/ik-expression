@@ -13,7 +13,6 @@ import org.wltea.expression.datameta.BaseDataMeta;
 import org.wltea.expression.datameta.Constant;
 import org.wltea.expression.datameta.Reference;
 
-
 /**
  * 运算符及内嵌方法调用
  * @author 林良益，卓诗垚
@@ -126,10 +125,8 @@ public class FunctionExecution {
 				//注意，传入参数的顺序是颠倒的
 				for(int i = args.length - 1 ; i >= 0  ; i--){
 					Class<?> javaType = args[i].mapTypeToJavaClass();
-					if(javaType != null){
-						
-						if(Object.class != parametersType[parametersType.length - i - 1] && 
-								javaType != parametersType[parametersType.length - i - 1]){
+					if(javaType != null){						
+						if(!isCompatibleType(parametersType[parametersType.length - i - 1] , javaType)){
 							//抛异常
 							throw new IllegalExpressionException("函数\"" + functionName + "\"参数类型不匹配,函数参数定义类型为：" + parametersType[i].getName() + " 传入参数实际类型为：" + javaType.getName() 
 									, functionName
@@ -152,22 +149,27 @@ public class FunctionExecution {
 			Class<?> returnType = funtion.getReturnType();
 			
 			//转换成ExpressionToken
-			if(boolean.class == returnType){
+			if(boolean.class == returnType 
+					|| Boolean.class == returnType){
 				return  new Constant(BaseDataMeta.DataType.DATATYPE_BOOLEAN, Boolean.FALSE );
 				
 			}else if(Date.class == returnType){
 				return new Constant(BaseDataMeta.DataType.DATATYPE_DATE, null);
 				
-			}else if(double.class == returnType){
+			}else if(double.class == returnType
+					|| Double.class == returnType){
 				return new Constant(BaseDataMeta.DataType.DATATYPE_DOUBLE, Double.valueOf(0.0));
 				
-			}else if(float.class == returnType){
+			}else if(float.class == returnType
+					|| Float.class == returnType){
 				return new Constant(BaseDataMeta.DataType.DATATYPE_FLOAT, Float.valueOf(0.0f));
 				
-			}else if(int.class == returnType){
+			}else if(int.class == returnType
+					|| Integer.class == returnType){
 				return new Constant(BaseDataMeta.DataType.DATATYPE_INT, Integer.valueOf(0));
 				
-			}else if(long.class == returnType){
+			}else if(long.class == returnType
+					|| Long.class == returnType){
 				return new Constant(BaseDataMeta.DataType.DATATYPE_LONG, Long.valueOf(0L));
 				
 			}else if(String.class == returnType){
@@ -179,7 +181,8 @@ public class FunctionExecution {
 			}else if(Object.class == returnType){
 				return new Constant(BaseDataMeta.DataType.DATATYPE_OBJECT , null);	
 				
-			}else if(void.class == returnType){
+			}else if(void.class == returnType
+					|| Void.class == returnType){
 					return new Constant(BaseDataMeta.DataType.DATATYPE_OBJECT , null);					
 			}else{
 				throw new IllegalStateException("解析器内部错误：不支持的函数返回类型");
@@ -223,6 +226,50 @@ public class FunctionExecution {
 			}
 		}		
 		return parameters;
+	}
+
+	/**
+	 * 检查数据类型的兼容性
+	 * 类型相同，一定兼容
+	 * 如果parametersType 为Object 则兼容所有类型
+	 * 如果parametersType 为double 则兼容 int ，long ，float
+	 * 如果parametersType 为float 则兼容 int ，long 
+	 * 如果parametersType 为long 则兼容 int  
+	 * @param parametersType 方法定义的参数类型
+	 * @param argType 实际参数类型
+	 * @return
+	 */
+	private static boolean isCompatibleType(Class<?> parametersType , Class<?> argType){
+		if(Object.class == parametersType){
+			return true;
+			
+		}else if(parametersType == argType){
+			return true;
+			
+		}else if(double.class == parametersType){
+			return float.class == argType || long.class == argType || int.class == argType;
+			
+		}else if(Double.class == parametersType){
+			return double.class == argType;
+			
+		}else if(float.class == parametersType){
+			return long.class == argType || int.class == argType;
+			
+		}else if(Float.class == parametersType){
+			return float.class == argType;
+			
+		}else if(long.class == parametersType){
+			return int.class == argType;
+			
+		}else if(Long.class == parametersType){
+			return long.class == argType;
+			
+		}else if(Integer.class == parametersType){
+			return int.class == argType;
+			
+		}
+		return false;
+
 	}	
 	
 	

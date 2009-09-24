@@ -381,7 +381,7 @@ public abstract class BaseDataMeta {
 	 * @param another
 	 * @return
 	 */
-	public boolean isCompatibleType(BaseDataMeta another){
+	private boolean isCompatibleType(BaseDataMeta another){
 		
 		if(DataType.DATATYPE_NULL == this.getDataType() 
 				|| DataType.DATATYPE_NULL == another.getDataType()){
