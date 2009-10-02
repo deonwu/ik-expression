@@ -150,39 +150,40 @@ public class VariableTest extends TestCase {
 //		System.out.println("Result = " + result);
 		
 		
-//		
-//		//定义表达式
-//		
-//		String expression = "$问好(数字类型)";
-//		//给表达式中的变量 [用户名] 付上下文的值
-//		List<Variable> variables = new ArrayList<Variable>();
-//		variables.add(new Variable("数字类型" , DataType.DATATYPE_DOUBLE , new Integer(0)));
-//		//执行表达式
-//		PreparedExpression pe  = ExpressionEvaluator.preparedCompile(expression, variables);
-//		System.out.println("Result = " + pe.execute());
-//		
-//		pe.setArgument("数字类型", new Float(100));
-//		System.out.println("Result = " + pe.execute());		
-//		
-//		pe.setArgument("数字类型", new Double(100));
-//		System.out.println("Result = " + pe.execute());
-//		
-//		Object result = null;  
-//		result = ExpressionEvaluator.evaluate("$问好(1.0)");     
-//		System.out.println("Result = " + result);     
-//		result = ExpressionEvaluator.evaluate("$问好(1)");     
-//		System.out.println("Result = " + result);  
 		
-		Map vars = new HashMap();
-		System.out.println("-----------IK Expression");
+		//定义表达式
+		
+		String expression = "$问好(数字类型)";
+		//给表达式中的变量 [用户名] 付上下文的值
 		List<Variable> variables = new ArrayList<Variable>();
+		variables.add(new Variable("数字类型" , DataType.DATATYPE_DOUBLE , new Integer(0)));
+		//执行表达式
+		PreparedExpression pe  = ExpressionEvaluator.preparedCompile(expression, variables);
+		System.out.println("Result = " + pe.execute());
+		
+		pe.setArgument("数字类型", new Float(100));
+		System.out.println("Result = " + pe.execute());		
+		
+		pe.setArgument("数字类型", new Double(100));
+		System.out.println("Result = " + pe.execute());
+		
+		Object result = null;  
+		result = ExpressionEvaluator.evaluate("$问好(1.0)");     
+		System.out.println("Result = " + result);     
+		result = ExpressionEvaluator.evaluate("$问好(1)");     
+		System.out.println("Result = " + result);  
+		
+		//*************************
+		Map<String , Object> vars = new HashMap<String , Object>();
+		System.out.println("-----------IK Expression");
+		variables = new ArrayList<Variable>();
 		Object[] keys = vars.keySet().toArray();
 		for (int i=0;keys!=null && i<keys.length;i++){
 			Object key =keys[i];
 			variables.add(Variable.createVariable(key.toString(), vars.get(key)));
 		}
 
-		Object result = ExpressionEvaluator.evaluate("mobile!=null",variables);
+		result = ExpressionEvaluator.evaluate("mobile!=null",variables);
 		
 		Boolean b = (Boolean)result;
 		System.out.println(b.booleanValue());		
