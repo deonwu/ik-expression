@@ -14,6 +14,7 @@ import org.wltea.expression.datameta.BaseDataMeta;
 import org.wltea.expression.datameta.Constant;
 import org.wltea.expression.datameta.Reference;
 import org.wltea.expression.datameta.Variable;
+import org.wltea.expression.datameta.BaseDataMeta.DataType;
 
 import org.wltea.expression.format.ExpressionParser;
 import org.wltea.expression.format.FormatException;
@@ -81,7 +82,11 @@ public class ExpressionExecutor {
 			} else if (ExpressionToken.ETokenType.ETOKEN_TYPE_VARIABLE == expToken.getTokenType()){
 				//验证变量声明	
 				Variable var = VariableContainer.getVariable(expToken.getVariable().getVariableName());
-				if(var == null || var.getDataType() == null){
+				if(var == null){
+					//当变量没有定义时，视为null型
+					expToken.getVariable().setDataType(DataType.DATATYPE_NULL);
+					
+				}else if(var.getDataType() == null){
 					throw new IllegalExpressionException("表达式不合法，变量\"" + expToken.toString() + "\"缺少定义;位置:" + expToken.getStartPosition()
 								, expToken.toString()
 								, expToken.getStartPosition());						
@@ -425,7 +430,12 @@ public class ExpressionExecutor {
 					compileStack.push(constantToken);
 					
 				}else{
-					throw new IllegalStateException("变量\"" +expToken.getVariable().getVariableName() + "\"不是上下文合法变量" );						
+					//throw new IllegalStateException("变量\"" +expToken.getVariable().getVariableName() + "\"不是上下文合法变量" );						
+					//当变量没有定义时，视为null型
+					ExpressionToken constantToken = ExpressionToken.createConstantToken(
+							DataType.DATATYPE_NULL
+							, null);
+					compileStack.push(constantToken);
 				}
 				
 				
