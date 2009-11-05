@@ -38,6 +38,9 @@ public class FunctionTypeReader implements ElementReader {
 		while ((b = sr.read()) != -1) {
 			char c = (char)b;
 			if (c == FunctionTypeReader.END_MARK) {
+				if (sb.length() == 0) {
+					throw new FormatException("函数名称不能为空");
+				}
 				sr.reset();
 				return new Element(sb.toString(), index, ElementType.FUNCTION);
 			}
