@@ -14,7 +14,7 @@ import org.wltea.expression.datameta.Variable;
 public class ExpressionContext extends HashMap<String, Object> {
 
 	private static final long serialVersionUID = -373852423907495496L;
-
+	private Evaluator evaluator = null;
 
 	public Variable getVariable(String variableName){
 		Object obj = null; //this.get(variableName);
@@ -44,6 +44,10 @@ public class ExpressionContext extends HashMap<String, Object> {
 		return null;
 	}
 	
+	/**
+	 * 所有变量都转换为内部格式
+	 * @return
+	 */
 	public Map<String, Variable> getVariableMap(){
 		Map<String, Variable> tmp = new HashMap<String, Variable>();
 		
@@ -53,5 +57,22 @@ public class ExpressionContext extends HashMap<String, Object> {
 		
 		return tmp;	
 	}
+
+	/**
+	 * 返回当前的求值器。
+	 * @return
+	 */
+	public Evaluator getEvaluator() {
+		return evaluator;
+	}
+
+	/**
+	 * 设置求值器。
+	 * @param evaluator
+	 */
+	public void setEvaluator(Evaluator evaluator) {
+		this.evaluator = evaluator;
+	}
+	
 	
 }

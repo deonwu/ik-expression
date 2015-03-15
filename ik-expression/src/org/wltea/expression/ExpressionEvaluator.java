@@ -152,7 +152,7 @@ public class ExpressionEvaluator {
 
 		return evaluate(expression, ctx);
 	}
-	
+
 	/**
 	 * 根据流程上下文，执行公式语言
 	 * @param expression
@@ -160,8 +160,22 @@ public class ExpressionEvaluator {
 	 * @return
 	 */
 	public static Object evaluate(String expression, ExpressionContext ctx) {
+		return evaluate(expression, ctx, null);
+	}
+
+	/**
+	 * 根据流程上下文，执行公式语言
+	 * @param expression
+	 * @param ctx
+	 * @return
+	 */
+	public static Object evaluate(String expression, ExpressionContext ctx, Evaluator evaluator) {
 		if (expression == null) {
 			return null;
+		}
+		
+		if(evaluator != null){
+			ctx.setEvaluator(evaluator);
 		}
 		
 		ExpressionExecutor ee = new ExpressionExecutor(ctx);

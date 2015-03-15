@@ -38,9 +38,14 @@ import org.wltea.expression.op.define.Op_SELECT;
  * 2008-09-17
  */
 public enum Operator{
+
 	
 	//逻辑否
 	NOT("!" , 80 , 1),
+	
+	//按位取反
+	BNOT("~", 80, 1),
+
 	//取负
 	NG("-" , 80 , 1),
 	
@@ -55,6 +60,11 @@ public enum Operator{
 	PLUS("+" , 60 , 2),
 	//算术减
 	MINUS("-" , 60 , 2),
+	
+	//位与
+	BAND("&", 55, 2),
+	//位或
+	BOR("|", 55, 2),
 	
 	
 	//逻辑小于
