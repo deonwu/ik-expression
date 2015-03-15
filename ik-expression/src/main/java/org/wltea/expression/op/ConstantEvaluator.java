@@ -138,6 +138,7 @@ public class ConstantEvaluator implements Evaluator<Constant> {
 	}
 
 	private Method getOperator(Operator op, Object obj){
+		if(obj == null) return null;
 		String ck = obj.getClass().getName() + op.getToken();
 		
 		if(!evalMethod.containsKey(ck)){

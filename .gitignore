@@ -3,3 +3,7 @@
 bin
 ik-expression/target
 target
+
+ik-expression/.project
+
+ik-expression/.classpath
