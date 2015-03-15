@@ -26,8 +26,12 @@ public class Reference {
 	private Constant[] arguments;
 	//引用对象实际的数据类型
 	private DataType dataType;
-	
+
 	public Reference(ExpressionToken token , Constant[] args) throws IllegalExpressionException{
+		this(token, args, true);
+	}
+	
+	public Reference(ExpressionToken token , Constant[] args, boolean isStrict) throws IllegalExpressionException{
 		this.token = token;
 		this.arguments = args;
 		//记录Reference实际的数据类型
@@ -35,9 +39,13 @@ public class Reference {
 			Constant result = FunctionExecution.varify(token.getFunctionName(), token.getStartPosition() , args);
 			dataType = result.getDataType();
 		}else if(ExpressionToken.ETokenType.ETOKEN_TYPE_OPERATOR == token.getTokenType()){
-			Operator op = token.getOperator();
-			Constant result = op.verify(token.getStartPosition() , args);
-			dataType = result.getDataType();
+			if(isStrict){
+				Operator op = token.getOperator();
+				Constant result = op.verify(token.getStartPosition() , args);
+				dataType = result.getDataType();
+			}else {
+				dataType = DataType.DATATYPE_OBJECT;
+			}
 		}
 	}
 	
@@ -81,7 +89,8 @@ public class Reference {
 			Constant first = arguments[0];
 			Constant second = null;
 			if(arguments.length > 1){
-				second = arguments[1];
+				first = arguments[1];
+				second = arguments[0];
 			}
 			
 			if(evaluator != null && evaluator.canOperator(op, first, second)){

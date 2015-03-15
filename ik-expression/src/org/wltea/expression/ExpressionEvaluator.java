@@ -173,6 +173,9 @@ public class ExpressionEvaluator {
 		if (expression == null) {
 			return null;
 		}
+		if(ctx == null){
+			ctx = new ExpressionContext();
+		}
 		
 		if(evaluator != null){
 			ctx.setEvaluator(evaluator);

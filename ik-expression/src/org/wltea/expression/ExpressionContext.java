@@ -15,6 +15,14 @@ public class ExpressionContext extends HashMap<String, Object> {
 
 	private static final long serialVersionUID = -373852423907495496L;
 	private Evaluator evaluator = null;
+	
+	/**
+	 * 是否做严格的表达是检查。
+	 * 如果有包含对象的求值，不需要做严格的类型检查，只需要检查参数个数就可以了。
+	 * 
+	 * 默认是严格检查。
+	 */
+	private boolean isStrict = true;
 
 	public Variable getVariable(String variableName){
 		Object obj = null; //this.get(variableName);
@@ -72,6 +80,14 @@ public class ExpressionContext extends HashMap<String, Object> {
 	 */
 	public void setEvaluator(Evaluator<?> evaluator) {
 		this.evaluator = evaluator;
+	}
+
+	public boolean isStrict() {
+		return isStrict;
+	}
+
+	public void setStrict(boolean isStrict) {
+		this.isStrict = isStrict;
 	}
 	
 	

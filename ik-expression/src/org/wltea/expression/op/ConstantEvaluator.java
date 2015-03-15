@@ -38,7 +38,7 @@ public class ConstantEvaluator implements Evaluator<Constant> {
 		//如果第二参数为引用，则执行引用
 		if(second != null && second.isReference()){
 			Reference secondRef = (Reference)second.getDataValue();
-			second = secondRef.execute(this		);
+			second = secondRef.execute(this);
 		}
 		if(second != null){
 			secondObj = second.getDataValue();
@@ -89,7 +89,7 @@ public class ConstantEvaluator implements Evaluator<Constant> {
 				throw new IllegalExpressionException("不支持:" + op.getToken() + "操作, 在Evaluable对象。");	
 			}			
 		}else{
-			Method m = getOperator(op, first);
+			Method m = getOperator(op, firstObj);
 			if(m != null){
 				Object[] args = second != null ? new Object[]{secondObj} : new Object[]{}; 
 				try {
@@ -98,7 +98,7 @@ public class ConstantEvaluator implements Evaluator<Constant> {
 					throw new IllegalExpressionException(e.toString(), e.getCause());
 				}
 			}else {
-				throw new IllegalExpressionException("不支持:" + op.getToken() + "操作, 在对象:" + first.getClass().getName());
+				throw new IllegalExpressionException("不支持:" + op.getToken() + "操作, 在对象:" + firstObj.getClass().getName());
 			}
 		}
 		
@@ -120,7 +120,7 @@ public class ConstantEvaluator implements Evaluator<Constant> {
 		//如果第二参数为引用，则执行引用
 		if(second != null && second.isReference()){
 			Reference secondRef = (Reference)second.getDataValue();
-			second = secondRef.execute();
+			second = secondRef.execute(this);
 		}
 		if(second != null){
 			secondObj = second.getDataValue();
@@ -144,7 +144,7 @@ public class ConstantEvaluator implements Evaluator<Constant> {
 			
 			for(Method om : obj.getClass().getMethods()){
 				org.wltea.expression.annotation.Operator anno = om.getAnnotation(org.wltea.expression.annotation.Operator.class);
-				if(anno.sign().equals(op.getToken())){
+				if(anno != null && anno.sign().equals(op.getToken())){
 					evalMethod.put(ck, om);
 					break;
 				}

@@ -467,7 +467,7 @@ public class ExpressionExecutor {
 					}
 				}
 				//构造引用常量对象
-				Reference ref = new Reference(expToken , args);
+				Reference ref = new Reference(expToken , args, ctx.isStrict());
 				ExpressionToken resultToken =  ExpressionToken.createReference(ref);
 				//将引用对象压入栈
 				compileStack.push(resultToken);
@@ -840,8 +840,17 @@ public class ExpressionExecutor {
 			}
 		}
 		//执行操作符校验，并返回校验
-		Constant result = op.verify(opToken.getStartPosition() , args);
-		return ExpressionToken.createConstantToken(result);		 
+		Constant result = null;
+		if(ctx.isStrict()){
+			result = op.verify(opToken.getStartPosition() , args);
+		}else {
+			if(op.getOpType() != args.length){
+				throw new IllegalArgumentException("运算操作符参数为空:" + op.getToken() + ", type:" + op.getOpType() + ", cur:" + args.length);
+			}else {
+				result = new Constant(BaseDataMeta.DataType.DATATYPE_FLOAT , Float.valueOf(0F));
+			}
+		}
+		return ExpressionToken.createConstantToken(result);	
 
 	}
 
