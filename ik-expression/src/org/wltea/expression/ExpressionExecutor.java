@@ -28,6 +28,11 @@ import org.wltea.expression.op.Operator;
  * 2008-09-18
  */
 public class ExpressionExecutor {
+	private ExpressionContext ctx = null;
+	
+	public ExpressionExecutor(ExpressionContext ctx){
+		this.ctx = ctx;
+	}
 	
 	/**
 	 * 对表达式进行语法分析，将其转换成Token对象队列
@@ -81,7 +86,7 @@ public class ExpressionExecutor {
 				
 			} else if (ExpressionToken.ETokenType.ETOKEN_TYPE_VARIABLE == expToken.getTokenType()){
 				//验证变量声明	
-				Variable var = VariableContainer.getVariable(expToken.getVariable().getVariableName());
+				Variable var = ctx.getVariable(expToken.getVariable().getVariableName()); 
 				if(var == null){
 					//当变量没有定义时，视为null型
 					expToken.getVariable().setDataType(DataType.DATATYPE_NULL);
@@ -421,7 +426,7 @@ public class ExpressionExecutor {
 			}else if (ExpressionToken.ETokenType.ETOKEN_TYPE_VARIABLE == expToken.getTokenType()){
 				//读取一个变量
 				//从上下文获取变量的实际值，将其转化成常量Token，压入栈
-				Variable varWithValue = VariableContainer.getVariable(expToken.getVariable().getVariableName());
+				Variable varWithValue = ctx.getVariable(expToken.getVariable().getVariableName());
 				if(varWithValue != null){
 					//生成一个有值常量，varWithValue.getDataValue有可能是空值
 					ExpressionToken constantToken = ExpressionToken.createConstantToken(

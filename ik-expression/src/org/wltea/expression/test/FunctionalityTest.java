@@ -6,6 +6,7 @@ package org.wltea.expression.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.wltea.expression.ExpressionContext;
 import org.wltea.expression.ExpressionExecutor;
 import org.wltea.expression.ExpressionToken;
 import org.wltea.expression.IllegalExpressionException;
@@ -25,7 +26,7 @@ public class FunctionalityTest extends TestCase {
 	 * @throws Exception
 	 */
 	public void testOperators()  throws Exception {
-		ExpressionExecutor ee = new ExpressionExecutor();
+		ExpressionExecutor ee = new ExpressionExecutor(new ExpressionContext());
 		ArrayList<String> expressions = new ArrayList<String>();
 		//算术符
 		expressions.add("-1+2-3*4/5%6");
@@ -111,7 +112,7 @@ public class FunctionalityTest extends TestCase {
 	 */
 	public void testInnerFunctions() throws Exception {
 		System.out.println("testInnerFunctions");
-		ExpressionExecutor ee = new ExpressionExecutor();
+		ExpressionExecutor ee = new ExpressionExecutor(new ExpressionContext());
 		ArrayList<String> expressions = new ArrayList<String>();
 		//$CONTAINS
 		expressions.add("$CONTAINS(\"aabbcc\",\"abc\")");
