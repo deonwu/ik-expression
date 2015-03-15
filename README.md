@@ -13,8 +13,8 @@ IK Expression 是一个解释型表达式解析器。是从google code 导入到
 
 原项目信息
 ==========
-1. http://linliangyi2007.iteye.com/blog/481407
-1. http://linliangyi2007.iteye.com/blog/337069
+1. 分享开源表达式解析器IK-Expression2.0 (http://linliangyi2007.iteye.com/blog/337069)
+1. 发布IK Expression开源表达式解析器 V2.1.2 (http://linliangyi2007.iteye.com/blog/481407)
 
 
 感谢IK 的原始作者，提供了一个灵活可扩展的原始版本。
