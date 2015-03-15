@@ -19,6 +19,7 @@ import org.wltea.expression.datameta.BaseDataMeta.DataType;
 import org.wltea.expression.format.ExpressionParser;
 import org.wltea.expression.format.FormatException;
 import org.wltea.expression.function.FunctionExecution;
+import org.wltea.expression.op.ConstantEvaluator;
 import org.wltea.expression.op.Operator;
 
 /**
@@ -528,6 +529,8 @@ public class ExpressionExecutor {
 			}			
 		}
 		
+		ConstantEvaluator evaluator = new ConstantEvaluator(ctx.getEvaluator());
+		
 		//表达式编译完成，这是编译栈内应该只有一个编译结果
 		if(compileStack.size() == 1){
 			ExpressionToken token = compileStack.pop();
@@ -535,7 +538,7 @@ public class ExpressionExecutor {
 			//执行Reference常量
 			if(result.isReference()){
 				Reference resultRef = (Reference)result.getDataValue();				
-				return resultRef.execute();
+				return resultRef.execute(evaluator);
 				
 			}else{
 				//返回普通的常量

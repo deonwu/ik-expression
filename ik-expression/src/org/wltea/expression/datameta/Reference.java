@@ -3,6 +3,7 @@
  */
 package org.wltea.expression.datameta;
 
+import org.wltea.expression.Evaluator;
 import org.wltea.expression.ExpressionToken;
 import org.wltea.expression.IllegalExpressionException;
 import org.wltea.expression.ExpressionToken.ETokenType;
@@ -59,18 +60,35 @@ public class Reference {
 	public void setToken(ExpressionToken token) {
 		this.token = token;
 	} 
+
+	/**
+	 * 执行引用对象指待的表达式（操作符或者函数）
+	 * @return
+	 */
+	public Constant execute() throws IllegalExpressionException{
+		return execute(null);
+	}
 	
 	/**
 	 * 执行引用对象指待的表达式（操作符或者函数）
 	 * @return
 	 */
-	public Constant execute()throws IllegalExpressionException{
+	public Constant execute(Evaluator<Constant> evaluator)throws IllegalExpressionException{
 		
 		if(ETokenType.ETOKEN_TYPE_OPERATOR == token.getTokenType()){
 			//执行操作符
 			Operator op = token.getOperator();
-			return op.execute(arguments);
+			Constant first = arguments[0];
+			Constant second = null;
+			if(arguments.length > 1){
+				second = arguments[1];
+			}
 			
+			if(evaluator != null && evaluator.canOperator(op, first, second)){
+				return evaluator.evalutor(op, first, second);
+			}else {			
+				return op.execute(arguments);
+			}	
 		}else if(ETokenType.ETOKEN_TYPE_FUNCTION == token.getTokenType()){
 			//执行函数
 			return	FunctionExecution.execute(token.getFunctionName(), token.getStartPosition() , arguments);

@@ -62,7 +62,7 @@ public class ExpressionContext extends HashMap<String, Object> {
 	 * 返回当前的求值器。
 	 * @return
 	 */
-	public Evaluator getEvaluator() {
+	public Evaluator<?> getEvaluator() {
 		return evaluator;
 	}
 
@@ -70,7 +70,7 @@ public class ExpressionContext extends HashMap<String, Object> {
 	 * 设置求值器。
 	 * @param evaluator
 	 */
-	public void setEvaluator(Evaluator evaluator) {
+	public void setEvaluator(Evaluator<?> evaluator) {
 		this.evaluator = evaluator;
 	}
 	

@@ -33,6 +33,11 @@ public class IllegalExpressionException extends Exception {
 		super(msg);
 	}
 	
+	public IllegalExpressionException(String msg, Throwable throwable){
+		super(msg, throwable);
+	}
+
+	
 	public IllegalExpressionException(String msg , String errorTokenText ){
 		super(msg);
 		this.errorTokenText = errorTokenText;
