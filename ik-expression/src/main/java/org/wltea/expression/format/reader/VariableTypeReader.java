@@ -38,7 +38,7 @@ public class VariableTypeReader implements ElementReader {
 				sr.reset();
 				return sb.toString();
 			}
-			if (!Character.isJavaIdentifierPart(c)) {
+			if (!Character.isJavaIdentifierPart(c) && c != '.') {
 				throw new FormatException("名称不能为非法字符：" + c);
 			}
 			if (readStart) {

@@ -68,7 +68,7 @@ public class ConstantEvaluator implements Evaluator<Constant> {
 			}else if(op.equals(Operator.LE)){
 				obj = new Boolean(o.boolLE(secondObj));
 			}else if(op.equals(Operator.LT)){
-				obj = new Boolean(o.boolLT(obj));
+				obj = new Boolean(o.boolLT(secondObj));
 			}else if(op.equals(Operator.MINUS)){
 				obj = o.opMINUS(secondObj);
 			}else if(op.equals(Operator.MOD)){
