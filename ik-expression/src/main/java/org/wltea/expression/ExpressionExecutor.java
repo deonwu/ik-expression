@@ -467,7 +467,7 @@ public class ExpressionExecutor {
 					}
 				}
 				//构造引用常量对象
-				Reference ref = new Reference(expToken , args, ctx.isStrict());
+				Reference ref = new Reference(expToken , args, ctx.isStrict(), (Evaluator<Constant>)ctx.getEvaluator());
 				ExpressionToken resultToken =  ExpressionToken.createReference(ref);
 				//将引用对象压入栈
 				compileStack.push(resultToken);
@@ -506,7 +506,7 @@ public class ExpressionExecutor {
 						Constant[] arguments = new Constant[argsList.size()];
 						arguments = argsList.toArray(arguments);						
 						//构造引用常量对象
-						Reference ref = new Reference(expToken , arguments);
+						Reference ref = new Reference(expToken , arguments, (Evaluator<Constant>)ctx.getEvaluator());
 						ExpressionToken resultToken =  ExpressionToken.createReference(ref);
 						//将引用对象压入栈
 						compileStack.push(resultToken);

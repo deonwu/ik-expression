@@ -5,8 +5,8 @@ package org.wltea.expression.datameta;
 
 import org.wltea.expression.Evaluator;
 import org.wltea.expression.ExpressionToken;
-import org.wltea.expression.IllegalExpressionException;
 import org.wltea.expression.ExpressionToken.ETokenType;
+import org.wltea.expression.IllegalExpressionException;
 import org.wltea.expression.datameta.BaseDataMeta.DataType;
 import org.wltea.expression.function.FunctionExecution;
 import org.wltea.expression.op.Operator;
@@ -27,11 +27,13 @@ public class Reference {
 	//引用对象实际的数据类型
 	private DataType dataType;
 
-	public Reference(ExpressionToken token , Constant[] args) throws IllegalExpressionException{
-		this(token, args, true);
+	private Evaluator<Constant> evaluator;
+
+	public Reference(ExpressionToken token , Constant[] args, Evaluator<Constant> evaluator) throws IllegalExpressionException{
+		this(token, args, true, evaluator);
 	}
 	
-	public Reference(ExpressionToken token , Constant[] args, boolean isStrict) throws IllegalExpressionException{
+	public Reference(ExpressionToken token , Constant[] args, boolean isStrict, Evaluator<Constant> evaluator) throws IllegalExpressionException{
 		this.token = token;
 		this.arguments = args;
 		//记录Reference实际的数据类型
@@ -47,6 +49,8 @@ public class Reference {
 				dataType = DataType.DATATYPE_OBJECT;
 			}
 		}
+
+		this.evaluator = evaluator;
 	}
 	
 	public DataType getDataType() {
@@ -74,7 +78,7 @@ public class Reference {
 	 * @return
 	 */
 	public Constant execute() throws IllegalExpressionException{
-		return execute(null);
+		return execute(evaluator);
 	}
 	
 	/**
