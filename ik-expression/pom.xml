@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.wltea.expression</groupId>
+  <groupId>io.github.deonwu</groupId>
   <artifactId>ik-expression</artifactId>
   <packaging>jar</packaging>
   <version>1.0.2</version>
   <name>ik-expression api</name>
-  <url>http://maven.apache.org</url>
+  <url>https://github.com/deonwu/ik-expression</url>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -57,125 +57,26 @@
 			</plugin>
 		</plugins>
 	</build>
-	<profiles>
-		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<repositories>
-				<repository>
-					<id>central_prod</id>
-					<url>http://mvn.test.alipay.net:8080/artifactory/repo</url>
-					<snapshots>
-						<enabled>true</enabled>
-					</snapshots>
-				</repository>
-				<repository>
-					<id>central</id>
-					<url>http://mvn.dev.alipay.net:8080/artifactory/repo</url>
-					<snapshots>
-						<enabled>true</enabled>
-					</snapshots>
-				</repository>
-				<repository>
-					<id>snapshots</id>
-					<url>http://mvn.dev.alipay.net:8080/artifactory/repo</url>
-					<releases>
-						<enabled>true</enabled>
-					</releases>
-				</repository>
-			</repositories>
-			<pluginRepositories>
-				<pluginRepository>
-					<id>central</id>
-					<url>http://mvn.dev.alipay.net:8080/artifactory/repo</url>
-					<snapshots>
-						<enabled>false</enabled>
-					</snapshots>
-				</pluginRepository>
-			</pluginRepositories>
-		</profile>
-		<profile>
-			<id>test</id>
-			<activation>
-				<property>
-					<name>env</name>
-					<value>test</value>
-				</property>
-			</activation>
-			<repositories>
-				<repository>
-					<id>central</id>
-					<url>http://mvn.test.alipay.net:8080/artifactory/repo</url>
-					<snapshots>
-						<enabled>true</enabled>
-					</snapshots>
-				</repository>
-				<repository>
-					<id>snapshots</id>
-					<url>http://mvn.test.alipay.net:8080/artifactory/repo</url>
-					<releases>
-						<enabled>true</enabled>
-					</releases>
-				</repository>
-			</repositories>
-			<pluginRepositories>
-				<pluginRepository>
-					<id>central</id>
-					<url>http://mvn.test.alipay.net:8080/artifactory/repo</url>
-					<snapshots>
-						<enabled>false</enabled>
-					</snapshots>
-				</pluginRepository>
-			</pluginRepositories>
-		</profile>
-		<profile>
-			<id>prod</id>
-			<activation>
-				<property>
-					<name>env</name>
-					<value>prod</value>
-				</property>
-			</activation>
-			<repositories>
-				<repository>
-					<id>central</id>
-					<url>http://mvn.test.alipay.net:8080/artifactory/repo</url>
-					<snapshots>
-						<enabled>true</enabled>
-					</snapshots>
-				</repository>
-				<repository>
-					<id>snapshots</id>
-					<url>http://mvn.test.alipay.net:8080/artifactory/repo</url>
-					<releases>
-						<enabled>true</enabled>
-					</releases>
-				</repository>
-			</repositories>
-			<pluginRepositories>
-				<pluginRepository>
-					<id>central</id>
-					<url>http://mvn.test.alipay.net:8080/artifactory/repo</url>
-					<snapshots>
-						<enabled>false</enabled>
-					</snapshots>
-				</pluginRepository>
-			</pluginRepositories>
-		</profile>
-	</profiles>
-	<distributionManagement>
-		<!-- use the following if you're not using a snapshot version. -->
-		<repository>
-			<id>central_dev</id>
-			<name>Alipay Dev Release Repository</name>
-			<url>http://mvn.dev.alipay.net:8081/artifactory/content/repositories/Alipay-Releases</url>
-		</repository>
-		<snapshotRepository>
-			<id>central_dev</id>
-			<name>Alipay Dev Snapshot Repository</name>
-			<url>http://mvn.dev.alipay.net:8081/artifactory/content/repositories/Alipay-Snapshot</url>
-		</snapshotRepository>
-	</distributionManagement>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Dalong.wu</name>
+			<email>i@deonwu84.com</email>
+			<organization>Personal</organization>
+			<organizationUrl>https://github.com/deonwu/</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/deonwu/ik-expression.git</connection>
+		<developerConnection>scm:git:ssh://github.com:deonwu/ik-expression.git</developerConnection>
+		<url>http://github.com/deonwu/ik-expression/tree/master</url>
+	</scm>
 </project>
