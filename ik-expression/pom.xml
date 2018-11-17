@@ -77,6 +77,6 @@
 	<scm>
 		<connection>scm:git:git://github.com/deonwu/ik-expression.git</connection>
 		<developerConnection>scm:git:ssh://github.com:deonwu/ik-expression.git</developerConnection>
-		<url>http://github.com/deonwu/ik-expression/tree/master</url>
+		<url>http://github.com/deonwu/ik-expression/tree/master/ik-expression</url>
 	</scm>
 </project>
