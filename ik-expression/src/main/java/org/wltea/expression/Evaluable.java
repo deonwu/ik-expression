@@ -57,28 +57,28 @@ public interface Evaluable<T> {
 	public T opMINUS(T obj);
 	
 	/**
-	 * 逻辑小于 <
+	 * 逻辑小于 &lt;
 	 * @param obj
 	 * @return
 	 */
 	public boolean boolLT(T obj);
 	
 	/**
-	 * 逻辑小于等于 <=
+	 * 逻辑小于等于 &lt;=
 	 * @param obj
 	 * @return
 	 */
 	public boolean boolLE(T obj);
 	
 	/**
-	 * 逻辑大于 >
+	 * 逻辑大于 &gt;
 	 * @param obj
 	 * @return
 	 */
 	public boolean boolGT(T obj);
 	
 	/**
-	 * 逻辑大于等于 >=
+	 * 逻辑大于等于 &gt;=
 	 * @param obj
 	 * @return
 	 */
@@ -99,7 +99,7 @@ public interface Evaluable<T> {
 	public boolean boolNEQ(T obj);
 
 	/**
-	 * 逻辑与 &&
+	 * 逻辑与 &amp;&amp;
 	 * @param obj
 	 * @return
 	 */
@@ -120,7 +120,7 @@ public interface Evaluable<T> {
 	public T opOR(T obj);	
 
 	/**
-	 * 且运算 &
+	 * 且运算 &amp;
 	 * @param obj
 	 * @return
 	 */

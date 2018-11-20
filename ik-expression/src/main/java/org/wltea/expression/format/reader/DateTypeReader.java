@@ -58,7 +58,7 @@ public class DateTypeReader implements ElementReader {
 	 * 转化后的格式支持Timestamp.valueOf(String value)
 	 * @param time 字符窜表示的时间
 	 * @return 格式代的结果
-	 * @throws BeRefuseException
+	 * @throws FormatException
 	 */
 	public static String formatTime(String time) throws FormatException {
 		if (time == null) {

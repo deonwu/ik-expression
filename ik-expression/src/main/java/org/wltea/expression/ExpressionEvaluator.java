@@ -33,8 +33,7 @@ public class ExpressionEvaluator {
 	 * @param expression
 	 * @param variables
 	 * @return
-	 * @throws IllegalExpressionException 
-	 */	
+	 */
 	public static String compile(String expression, Collection<Variable> variables){
 		ExpressionContext ctx = new ExpressionContext();
 		//获取上下文的变量，设置到脚本执行器中
@@ -54,7 +53,6 @@ public class ExpressionEvaluator {
 	 * @param expression
 	 * @param ctx -- 变量上下文
 	 * @return
-	 * @throws IllegalExpressionException 
 	 */
 	public static String compile(String expression, ExpressionContext ctx){
 		if (expression == null) {
@@ -80,8 +78,7 @@ public class ExpressionEvaluator {
 	 * @param expression 表达式的字符串表示
 	 * @param variables 表达式的参数集合
 	 * @return PreparedExpression 编译的表达式对象
-	 * @throws IllegalExpressionException
-	 */	
+	 */
 	public static PreparedExpression preparedCompile(String expression, Collection<Variable> variables){
 		ExpressionContext ctx = new ExpressionContext();
 		//获取上下文的变量，设置到脚本执行器中
@@ -101,7 +98,6 @@ public class ExpressionEvaluator {
 	 * @param expression 表达式的字符串表示
 	 * @param ctx 变量上下文
 	 * @return PreparedExpression 编译的表达式对象
-	 * @throws IllegalExpressionException
 	 */
 	public static PreparedExpression preparedCompile(String expression ,  ExpressionContext ctx){
 		if (expression == null) {

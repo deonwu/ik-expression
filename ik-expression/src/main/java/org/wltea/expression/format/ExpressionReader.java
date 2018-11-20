@@ -108,7 +108,6 @@ public class ExpressionReader extends StringReader {
 	 * @return ExpressionToken
 	 * @throws IOException
 	 * @throws FormatException
-	 * @throws AntipathicException
 	 */
 	public Element readToken() throws IOException, FormatException {
 		prefixBlank = false;

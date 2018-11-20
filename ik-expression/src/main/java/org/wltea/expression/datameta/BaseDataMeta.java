@@ -187,7 +187,6 @@ public abstract class BaseDataMeta {
 	/**
 	 * 获取Token的Date类型值
 	 * @return
-	 * @throws ParseException 
 	 */
 	public Date getDateValue(){
 		if(DataType.DATATYPE_DATE != this.dataType){

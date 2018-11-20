@@ -191,7 +191,6 @@ public enum Operator{
 	
 	/**
 	 * 获取操作符的字符表示
-	 * 如：+  - equals && ==
 	 * @return String 操作符的字符形态
 	 */
 	public String getToken(){
@@ -207,8 +206,6 @@ public enum Operator{
 
 	/**
 	 * 操作符类型
-	 * 一元 ！
-	 * 二元 && >=
 	 * @return int 操作符类型（几元操作）
 	 */
 	public int getOpType(){
