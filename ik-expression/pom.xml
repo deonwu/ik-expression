@@ -4,8 +4,9 @@
   <groupId>io.github.deonwu</groupId>
   <artifactId>ik-expression</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.2-SNAPSHOT</version>
+  <version>1.0.2</version>
   <name>ik-expression api</name>
+  <description>A tool for parse math expression.</description>
   <url>https://github.com/deonwu/ik-expression</url>
   <dependencies>
     <dependency>
